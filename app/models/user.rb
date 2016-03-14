@@ -12,4 +12,7 @@ class User < ActiveRecord::Base
       user.password = Devise.friendly_token[0,20]
     end
   end
+
+  has_many :student_classes
+  has_many :students, :through => :student_classes
 end
