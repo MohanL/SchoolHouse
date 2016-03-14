@@ -5,6 +5,8 @@ class User < ActiveRecord::Base
          :recoverable, :rememberable, :trackable, :validatable, :omniauthable, :omniauth_providers => [:facebook]
 
   enum role: [:normal, :admin]
+  has_many :student_classes
+  has_many :students, :through => :student_classes
 
   def self.from_omniauth(auth)
     where(provider: auth.provider, uid: auth.uid).first_or_create do |user|
@@ -13,6 +15,8 @@ class User < ActiveRecord::Base
     end
   end
 
-  has_many :student_classes
-  has_many :students, :through => :student_classes
+  def self.guardians
+    where("role = 0")
+  end
+
 end

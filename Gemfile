@@ -28,6 +28,7 @@ end
 
 group :development, :test do
   gem 'byebug'
+  gem 'pry'
   gem 'rspec-rails'
   gem 'sqlite3'
   gem 'spring'
