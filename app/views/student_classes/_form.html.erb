@@ -1,0 +1,14 @@
+<%= form_for @student_class do |f| %>
+  <%= f.label :name %><br>
+  <%= f.text_field :name %><br>
+  <%= f.label :min_age %><br>
+  <%= f.select :min_age, options_for_select(3..10) %><br>
+  <%= f.label :max_age %><br>
+  <%= f.select :max_age, options_for_select(3..10) %><br>
+  <%= f.label :start_date %><br>
+  <%= f.date_select :start_date %><br>
+  <%= f.label :end_date %><br>
+  <%= f.date_select :end_date %><br>
+  <%= f.submit %><br>
+<% end %>
+
