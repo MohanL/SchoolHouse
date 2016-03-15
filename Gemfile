@@ -14,6 +14,8 @@ gem 'turbolinks'
 gem 'jbuilder', '~> 2.0'
 gem 'sdoc', '~> 0.4.0', group: :doc
 gem 'bootstrap'
+gem 'bootstrap-datepicker-rails'
+gem 'bootstrap_form'
 gem 'devise'
 gem 'devise-bootstrap-views'
 gem 'devise_invitable'

@@ -41,6 +41,6 @@ class StudentClassesController < ApplicationController
     end
 
     def student_class_params
-      params.require(:student_class).permit(:name, :min_age, :max_age, :start_date, :end_date)
+      params.require(:student_class).permit(:name, :min_age, :max_age, :start_date, :end_date, :start_time, :end_time, :meets_on => [])
     end
 end

@@ -1,14 +1,25 @@
-<%= form_for @student_class do |f| %>
-  <%= f.label :name %><br>
-  <%= f.text_field :name %><br>
-  <%= f.label :min_age %><br>
-  <%= f.select :min_age, options_for_select(3..10) %><br>
-  <%= f.label :max_age %><br>
-  <%= f.select :max_age, options_for_select(3..10) %><br>
-  <%= f.label :start_date %><br>
-  <%= f.date_select :start_date %><br>
-  <%= f.label :end_date %><br>
-  <%= f.date_select :end_date %><br>
-  <%= f.submit %><br>
+<div class="container">
+<div class="col-md-6 col-md-offset-3">
+<%= bootstrap_form_for @student_class do |f| %>
+  <%= f.text_field :name %>
+  <%= f.select :min_age, options_for_select(3..10) %>
+  <%= f.select :max_age, options_for_select(3..10) %>
+  <%= f.select(:meets_on, [['Mondays', 'M'],
+                          ['Tuesdays', 'T'],
+                          ['Wednesdays', 'W'],
+                          ['Thursdays', 'Th'],
+                          ['Fridays', 'F'],
+                          ['Saturdays', 'Sa'],
+                          ['Sundays', 'Su']],
+                          {},
+                          { :multiple => true, :size => 7}
+              ) %>
+              <%= f.time_select :start_time, { :ignore_date => true, :minute_step => 15 } %>
+              <%= f.time_select :end_time, { :ignore_date => true, :minute_step => 15 } %>
+  <%= f.text_field(:start_date, :data => {:provide => "datepicker"})%>
+  <%= f.text_field(:end_date, :data => {:provide => "datepicker"})%>
+  <%= f.submit %>
 <% end %>
+</div>
+</div>
 

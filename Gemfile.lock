@@ -46,6 +46,9 @@ GEM
     bootstrap (4.0.0.alpha3)
       autoprefixer-rails (>= 6.0.3)
       sass (>= 3.4.19)
+    bootstrap-datepicker-rails (1.6.0.1)
+      railties (>= 3.0)
+    bootstrap_form (2.3.0)
     builder (3.2.2)
     byebug (8.2.2)
     coderay (1.1.0)
@@ -220,6 +223,8 @@ PLATFORMS
 
 DEPENDENCIES
   bootstrap
+  bootstrap-datepicker-rails
+  bootstrap_form
   byebug
   coffee-rails (~> 4.1.0)
   devise
