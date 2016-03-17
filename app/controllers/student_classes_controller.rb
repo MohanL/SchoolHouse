@@ -11,10 +11,10 @@ class StudentClassesController < ApplicationController
   end
 
   def create
-    binding.pry
     @student_class = StudentClass.new(student_class_params)
     authorize @student_class
     @student_class.save
+    redirect_to @student_class
   end
 
   def show
@@ -41,6 +41,7 @@ class StudentClassesController < ApplicationController
     end
 
     def student_class_params
+
       params.require(:student_class).permit(:name, :min_age, :max_age, :start_date, :end_date, :start_time, :end_time, :meets_on => [])
     end
 end

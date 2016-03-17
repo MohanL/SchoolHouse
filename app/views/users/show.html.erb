@@ -1,1 +1,16 @@
 <h1>Show page for <%= @user.email %>  </h1>
+<% if @students %>
+  <h3>Students:</h3>
+  <ul>
+    <% @students.each do |student| %>
+      <li>
+        <ul>
+          <li><%= student.name %></li>
+          <li><%= student.birthday %></li>
+          <li><%= student.student_class.name %></li>
+        </ul>
+      </li>
+    <% end %>
+  </ul>
+<% end %>
+<%= link_to "Add Student", new_student_path %>

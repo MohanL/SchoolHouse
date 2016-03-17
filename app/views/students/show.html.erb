@@ -1,2 +1,8 @@
 <h1>Students#show</h1>
 <p>Find me in app/views/students/show.html.erb</p>
+<%= @student.name %><br>
+<%= @student.birthday %><br>
+<%= @student.student_class.name %><br>
+<%= @student.user.email %><br>
+<%= link_to "Edit Student", edit_student_path(@student) %><br>
+<%= link_to "Back", user_path(current_user) %><br>

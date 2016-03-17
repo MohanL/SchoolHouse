@@ -1,2 +1,12 @@
 <h1>StudentClasses#show</h1>
 <p>Find me in app/views/student_classes/show.html.erb</p>
+<%= @student_class.name %><br>
+<p>Meets on</p>
+<ul>
+<% @student_class.meets_on.each do |day| %>
+  <li><%= day %></li>
+<% end %>
+</ul>
+<p>From <%= @student_class.start_time %> to <%= @student_class.end_time %></p>
+<p>Age range: <%= @student_class.min_age %> - <%= @student_class.max_age %></p>
+

@@ -8,7 +8,7 @@
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>
       </button>
-      <%= link_to "Home", root_path, :class => "navbar-brand" %>
+      <%= link_to "Admin Home", root_path, :class => "navbar-brand" %>
     </div>
 
     <!-- Collect the nav links, forms, and other content for toggling -->
@@ -16,6 +16,7 @@
       <ul class="nav navbar-nav">
         <li class="active"><a href="#">Link <span class="sr-only">(current)</span></a></li>
         <li><a href="#">Link</a></li>
+
         <li class="dropdown">
           <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Dropdown <span class="caret"></span></a>
           <ul class="dropdown-menu">
@@ -28,16 +29,28 @@
             <li><a href="#">One more separated link</a></li>
           </ul>
         </li>
+
+        <li class="dropdown">
+          <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Classes<span class="caret"></span></a>
+          <ul class="dropdown-menu">
+            <li><%= link_to "List Classes", student_classes_path %></li>
+            <li role="separator" class="divider"></li>
+            <li><%= link_to "Create New Class", new_student_class_path %></li>
+          </ul>
+        </li>
+
+        <li class="dropdown">
+          <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Students<span class="caret"></span></a>
+          <ul class="dropdown-menu">
+            <li><%= link_to "List Students", students_path %></li>
+            <li role="separator" class="divider"></li>
+            <li><%= link_to "New Student", new_student_path %></li>
+          </ul>
+        </li>
+
       </ul>
       <ul class="nav navbar-nav navbar-right">
-        <% if current_user %>
-          <li>
-          <%= link_to "Log out", destroy_user_session_path, :method => :delete %>
-          </li>
-        <% else %>
-          <li><%= link_to "Sign in", new_user_session_path %></li>
-          <li><%= link_to "Sign up", new_user_registration_path %></li>
-        <% end %>
+        <li><%= link_to "Log out", destroy_user_session_path, :method => :delete %></li>
       </ul>
     </div><!-- /.navbar-collapse -->
   </div><!-- /.container-fluid -->
