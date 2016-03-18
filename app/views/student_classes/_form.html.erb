@@ -18,6 +18,11 @@
               <%= f.time_select :end_time, { :ignore_date => true, :minute_step => 15 } %>
   <%= f.text_field(:start_date, :data => {:provide => "datepicker"})%>
   <%= f.text_field(:end_date, :data => {:provide => "datepicker"})%>
+  <p>Supplies:</p>
+  <%= f.fields_for :supplies do |supply| %>
+    <%= supply.text_field :name %>
+    <%= supply.text_field :amount %>
+  <% end %>
   <%= f.submit %>
 <% end %>
 </div>

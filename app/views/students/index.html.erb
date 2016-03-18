@@ -3,8 +3,10 @@
 <ul>
 <% @students.each do |student| %>
   <li>
-    <%= student.name %>
+    <%= link_to student.name, student %>
   </li>
 <% end %>
 </ul>
+<br>
+<%= link_to "Go Back", request.referrer %>
 

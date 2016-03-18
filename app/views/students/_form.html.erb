@@ -11,5 +11,6 @@
   <%= f.collection_select(:student_class_id, StudentClass.all, :id, :class_name, label: "Class") %>
   <%= f.submit %>
 <% end %>
+<%= link_to "Go Back", request.referrer %>
 </div>
 </div>

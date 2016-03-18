@@ -1,7 +1,8 @@
-<h1>Students#show</h1>
-<p>Find me in app/views/students/show.html.erb</p>
-<%= @student.name %><br>
-<%= @student.birthday %><br>
-<%= @student.student_class.name %><br>
-<%= @student.user.email %><br>
-<%= link_to "Edit Student", edit_student_path(@student) %><br>
+<h1><%= @student.name %></h1>
+<p>Birthday: <%= @student.birthday %></p>
+<p>Class: <%= link_to @student.student_class.class_name, @student.student_class %></p>
+<p><%= @student.user.email %></p>
+<%= link_to "Edit", edit_student_path(@student) %> | 
+<%= link_to "Delete", @student, :method => :delete, :data => {confirm: "Are you sure?"} %><br>
+<%= link_to "Go Back", request.referrer %>
+

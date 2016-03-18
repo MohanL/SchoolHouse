@@ -16,6 +16,12 @@ student_class.end_time = "14:00"
 student_class.meets_on = ["Mondays", "Wednesdays", "Fridays"]
 student_class.save!
 
+supply = student_class.supplies.build
+supply.name = Faker::Commerce.department(2, true)
+supply.amount = Faker::Commerce.price
+supply.date_due = student_class.start_date
+supply.save!
+
 student_class2 = StudentClass.new
 student_class2.name = Faker::Lorem.sentence
 student_class2.min_age = 6
@@ -26,6 +32,12 @@ student_class2.start_time = "9:00"
 student_class2.end_time = "16:00"
 student_class2.meets_on = ["Tuesdays", "Thursdays"]
 student_class2.save!
+
+supply2 = student_class2.supplies.build
+supply2.name = Faker::Commerce.department(2, true)
+supply2.amount = Faker::Commerce.price
+supply2.date_due = student_class2.start_date
+supply2.save!
 
 20.times do
   user = User.new
