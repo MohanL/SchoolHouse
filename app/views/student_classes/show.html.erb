@@ -10,3 +10,9 @@
 <p>From <%= @student_class.start_time %> to <%= @student_class.end_time %></p>
 <p>Age range: <%= @student_class.min_age %> - <%= @student_class.max_age %></p>
 
+<p>Students</p>
+<ul>
+<% @student_class.students.each do |student| %>
+  <li><%= link_to student.name, student_class_student_path(@student_class, student) %></li>
+<% end %>
+</ul>

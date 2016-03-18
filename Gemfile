@@ -23,6 +23,8 @@ gem 'devise_invitable'
 gem 'omniauth'
 gem 'omniauth-facebook'
 gem 'pundit'
+gem 'factory_girl_rails'
+gem 'faker'
 
 group :development do
   gem 'web-console', '~> 2.0'
