@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset='utf-8'>
+    <meta http-equiv="X-UA-Compatible" content="chrome=1">
+    <link href='https://fonts.googleapis.com/css?family=Chivo:900' rel='stylesheet' type='text/css'>
+    <link rel="stylesheet" type="text/css" href="stylesheets/stylesheet.css" media="screen">
+    <link rel="stylesheet" type="text/css" href="stylesheets/github-dark.css" media="screen">
+    <link rel="stylesheet" type="text/css" href="stylesheets/print.css" media="print">
+    <!--[if lt IE 9]>
+    <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <title>Davis Academy by AdamKing0126</title>
+  </head>
+
+  <body>
+    <div id="container">
+      <div class="inner">
+
+        <header>
+          <h1>Davis Academy</h1>
+          <h2>A RoR Project demonstrating various model relationships, nested forms, nested resources, authentication (Devise/OAuth), and authorization (Pundit)</h2>
+        </header>
+
+        <section id="downloads" class="clearfix">
+          <a href="https://github.com/AdamKing0126/davis_academy/zipball/master" id="download-zip" class="button"><span>Download .zip</span></a>
+          <a href="https://github.com/AdamKing0126/davis_academy/tarball/master" id="download-tar-gz" class="button"><span>Download .tar.gz</span></a>
+          <a href="https://github.com/AdamKing0126/davis_academy" id="view-on-github" class="button"><span>View on GitHub</span></a>
+        </section>
+
+        <hr>
+
+        <section id="main_content">
+          <h3>
+<a id="overview" class="anchor" href="#overview" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Overview</h3>
+
+<p>One of Rails' greatest strengths is that it allows the developer to quickly build and reference models.  In this demonstration, we have a base <code>User</code> class which <code>has_many :students</code> and in turn <code>has_many :student_classes, through: :students</code> - the <code>students</code> table serving as a join table.  Additionally, a <code>User</code> may have many <code>supplies</code> through <code>student_classes</code> - this time with the <code>student_classes</code> table filling the role as join table.  These basic associations allow the normal (non-Admin) user to view her students, the classes her students are enrolled in, and any supplies fees which are associated with the classes.</p>
+
+<h3>
+<a id="models" class="anchor" href="#models" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Models</h3>
+
+<p>Here are the models.  In the <code>user</code> model, we've got an <code>enum</code> for the user's role.  This is to set up our authorization with Pundit.  The authorization is fairly simple and in this case Pundit probably isn't necessary, but as the application grows it will make things easier.  There's one ActiveRecord method which retrieves all the <code>User.guardians</code> (i.e. not the admin or any other as-yet-to-be-created user role).  In the StudentClass model, we've got a couple helper methods and the <code>supplies_attributes=</code> method which allows for the creation of the nested resource, <code>supplies</code>.  More on that later. </p>
+
+<pre><code>##Devise User Model##
+class User &lt; ActiveRecord::Base
+  ## bunch of Devise stuff ....
+
+  enum role: [:normal, :admin]
+  has_many :students
+  has_many :student_classes, :through =&gt; :students
+  has_many :supplies, :through =&gt; :student_classes
+
+  def self.guardians
+    where("role = 0")
+  end
+
+end
+
+## Student Model ##
+class Student &lt; ActiveRecord::Base
+  belongs_to :user
+  belongs_to :student_class
+end
+
+##StudentClass Model##
+class StudentClass &lt; ActiveRecord::Base
+  has_many :students
+  has_many :supplies, dependent: :destroy
+  accepts_nested_attributes_for :supplies
+  serialize :meets_on
+  before_validation do |model|
+    model.meets_on.reject!(&amp;:blank?) if model.meets_on
+  end
+
+  def class_name
+    "#{self.name} - ages #{min_age} to #{max_age}"
+  end
+
+  def supplies_attributes=(attr)
+    self.save
+    attr.values.each do |supply|
+      s = self.supplies.find_or_create_by(name: supply[:name])
+      s.update(name: supply[:name], amount: supply[:amount], date_due: self.start_date)
+    end
+  end
+
+  def self.pretty_time(time)
+    time.strftime "%l:%M %P"
+  end
+end
+
+##Supply Model##
+class Supply &lt; ActiveRecord::Base
+  belongs_to :student_class
+end
+</code></pre>
+
+<h3>
+<a id="routing" class="anchor" href="#routing" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Routing</h3>
+
+<p>The model name <code>StudentClass</code> is a little clunky, but of course the word "class" is a reserved one in Ruby.  I kept the clunky model name and changed the path to <code>/classes</code> in the router. While nested resources aren't a necessity, they do make for a neater appearance in your urls.  In this case, we want to be able to go to <code>host/classes/2/students</code>, for example, to see the list of students in class number two.  Things could be made a bit prettier by slugifying the class name, but that's left for another exercise.</p>
+
+<p>Note that in the nested resource routing, we're only nesting the <code>show</code> and <code>index</code> controller actions: no need to provide routes to <code>host/classes/3/students/4/edit</code>, for example.</p>
+
+<p>Here's <code>routes.rb</code>.</p>
+
+<pre><code>Rails.application.routes.draw do
+
+  root 'static_pages#welcome'
+  get 'static_pages/about'
+  get 'static_pages/contact'
+
+  devise_for :users, :controllers =&gt; { :omniauth_callbacks =&gt; "users/omniauth_callbacks" }
+
+  resources :student_classes, path: :classes do
+    resources :students, only: [:show, :index]
+  end
+
+  resources :users
+  resources :students
+  resources :supplies
+
+end
+</code></pre>
+
+<h3>
+<a id="forms" class="anchor" href="#forms" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Forms</h3>
+
+<p>Adding the following gems to the <code>Gemfile</code> permitted the easy creation of nice-looking forms:</p>
+
+<pre><code>gem 'bootstrap-sass', '~&gt; 3.3', '&gt;= 3.3.6'
+gem 'bootstrap-datepicker-rails'
+gem 'bootstrap_form'
+gem 'devise-bootstrap-views'
+</code></pre>
+
+<p>Here's the form to create a new <code>student_class</code>:</p>
+
+<pre><code>&lt;div class="container"&gt;
+&lt;div class="col-md-6 col-md-offset-3"&gt;
+&lt;%= bootstrap_form_for @student_class do |f| %&gt;
+  &lt;%= f.text_field :name %&gt;
+  &lt;%= f.select :min_age, options_for_select(1..20) %&gt;
+  &lt;%= f.select :max_age, options_for_select(1..20) %&gt;
+  &lt;%= f.select(:meets_on, [['Mondays'],
+                          ['Tuesdays'],
+                          ['Wednesdays'],
+                          ['Thursdays'],
+                          ['Fridays'],
+                          ['Saturdays'],
+                          ['Sundays']],
+                          {},
+                          { :multiple =&gt; true, :size =&gt; 7}
+              ) %&gt;
+              &lt;%= f.time_select :start_time, { :ignore_date =&gt; true, :minute_step =&gt; 15 } %&gt;
+              &lt;%= f.time_select :end_time, { :ignore_date =&gt; true, :minute_step =&gt; 15 } %&gt;
+  &lt;%= f.text_field(:start_date, :data =&gt; {:provide =&gt; "datepicker"})%&gt;
+  &lt;%= f.text_field(:end_date, :data =&gt; {:provide =&gt; "datepicker"})%&gt;
+  &lt;p&gt;Supplies:&lt;/p&gt;
+  &lt;%= f.fields_for :supplies do |supply| %&gt;
+    &lt;%= supply.text_field :name %&gt;
+    &lt;%= supply.text_field :amount %&gt;
+  &lt;% end %&gt;
+  &lt;%= f.submit %&gt;
+&lt;% end %&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+</code></pre>
+
+<p>Note the creation of the <code>supplies</code> resource is nested within the form, allowing the creation (or editing) of supplies when creating (or editing) classes.  The nested form depends on a method in the <code>StudentClass</code> called <code>supplies_attributes=</code>.  If the object <code>respond_to? supplies_attributes=', The form_for helper will wrap the data from the nested form into a hash object called</code>supplies_attributes<code>.  To finalize this functionality,</code>supplies_attributes: [:name, :amount]<code>is added to the permitted params method in</code>student_classes_controller.rb`</p>
+
+<h3>
+<a id="authorization-with-pundit" class="anchor" href="#authorization-with-pundit" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Authorization with Pundit</h3>
+
+<p>Pundit is a great tool for managing authorization.  In this simple application, the permission's aren't complicated: the Admin can CRUD all objects, while the basic user can only affect her own objects.  Here's an example, the <code>StudentPolicy</code>:</p>
+
+<pre><code>class StudentPolicy &lt; ApplicationPolicy
+
+  def create?
+    user.admin? || record.try(:user_id) == user.id
+  end
+
+  def edit?
+    user.admin? || record.try(:user_id) == user.id
+  end
+
+  def update?
+    user.admin? || record.try(:user_id) == user.id
+  end
+
+  def destroy?
+    user.admin? || record.try(:user_id) == user.id
+  end
+
+end
+</code></pre>
+
+<p>Here's an example of this policy in action, in <code>students#update</code>:</p>
+
+<pre><code>  def update
+    @student = Student.find(params[:id])
+    authorize @student
+    @student.update_attributes(student_params)
+    redirect_to @student
+  end
+</code></pre>
+
+<p>We find the student through the <code>id</code> parameter, and authorize.  If <code>user.admin?</code>, we allow the update to go forward.  Otherwise, they get bumped to the <code>unauthorized</code> method in <code>ApplicationController</code>:</p>
+
+<pre><code>#application_controller.rb
+  def unauthorized(exception)
+    flash[:error] = "Access Denied."
+    redirect_to(request.referrer || user_path(current_user))
+  end
+end
+</code></pre>
+
+<p>While it takes a few minutes of setup time, employing Pundit helps you clean up your controller code by abstracting away the logic to determine what the user's role is and if she should be permitted to execute the requested action.</p>
+        </section>
+
+        <footer>
+          Davis Academy is maintained by <a href="https://github.com/AdamKing0126">AdamKing0126</a><br>
+          This page was generated by <a href="https://pages.github.com">GitHub Pages</a>. Tactile theme by <a href="https://twitter.com/jasonlong">Jason Long</a>.
+        </footer>
+
+        
+      </div>
+    </div>
+  </body>
+</html>
