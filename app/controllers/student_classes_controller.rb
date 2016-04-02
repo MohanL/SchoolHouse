@@ -12,6 +12,7 @@ class StudentClassesController < ApplicationController
   end
 
   def create
+    binding.pry
     @student_class = StudentClass.new(student_class_params)
     authorize @student_class
     @student_class.save

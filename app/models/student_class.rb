@@ -3,6 +3,8 @@ class StudentClass < ActiveRecord::Base
   has_many :supplies, dependent: :destroy
   accepts_nested_attributes_for :supplies
   serialize :meets_on
+  validates :name, presence: true
+  validate :student_class_validator
   before_validation do |model|
     model.meets_on.reject!(&:blank?) if model.meets_on
   end
@@ -12,14 +14,25 @@ class StudentClass < ActiveRecord::Base
   end
 
   def supplies_attributes=(attr)
-    attr.values.each do |supply|
+    if self.valid?
       self.save
-      s = self.supplies.find_or_create_by(name: supply[:name])
-      s.update(name: supply[:name], amount: supply[:amount], date_due: self.start_date)
+      attr.values.each do |supply|
+        s = self.supplies.find_or_create_by(name: supply[:name])
+        s.update(name: supply[:name], amount: supply[:amount], date_due: self.start_date)
+      end
     end
   end
 
   def self.pretty_time(time)
     time.strftime "%l:%M %P"
   end
+
+  def student_class_validator
+    binding.pry
+    if record.min_age > record.max_age
+      record.errors[:base] << "Min Age must be less than or equal to Max Age."
+    end
+  end
+
 end
+
