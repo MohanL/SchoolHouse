@@ -39,7 +39,7 @@
 <h3>
 <a id="models" class="anchor" href="#models" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Models</h3>
 
-<p>Here are the models.  In the <code>user</code> model, we've got an <code>enum</code> for the user's role.  This is to set up our authorization with Pundit.  The authorization is fairly simple and in this case Pundit probably isn't necessary, but as the application grows it will make things easier.  There's one ActiveRecord method which retrieves all the <code>User.guardians</code> (i.e. not the admin or any other as-yet-to-be-created user role).  In the StudentClass model, we've got a couple helper methods and the <code>supplies_attributes=</code> method which allows for the creation of the nested resource, <code>supplies</code>.  More on that later. </p>
+<p>Here are the models.  In the <code>user</code> model, we've got an <code>enum</code> for the user's role.  This is to set up our authorization with Pundit.  The authorization is fairly simple and in this case Pundit probably isn't necessary, but as the application grows it will make things easier.  There's one ActiveRecord method which retrieves all the <code>User.guardians</code> (i.e. not the admin or any other as-yet-to-be-created user role).  In the StudentClass model, we've got a couple helper methods and the <code>supplies_attributes=</code> method which allows for the creation of the nested resource, <code>supplies</code>.  More on that later.  I've included a few simple form validations, although they are by no means exhaustive. </p>
 
 <pre><code>##Devise User Model##
 class User &lt; ActiveRecord::Base
@@ -60,6 +60,7 @@ end
 class Student &lt; ActiveRecord::Base
   belongs_to :user
   belongs_to :student_class
+  validates :name, presence: true
 end
 
 ##StudentClass Model##
@@ -68,6 +69,8 @@ class StudentClass &lt; ActiveRecord::Base
   has_many :supplies, dependent: :destroy
   accepts_nested_attributes_for :supplies
   serialize :meets_on
+  validates :name, presence: true
+  validate :student_class_validator
   before_validation do |model|
     model.meets_on.reject!(&amp;:blank?) if model.meets_on
   end
@@ -88,6 +91,21 @@ class StudentClass &lt; ActiveRecord::Base
     time.strftime "%l:%M %P"
   end
 end
+
+  def student_class_validator
+    if start_time &gt; end_time
+      errors[:base] &lt;&lt; "Start time must be before end time"
+    end
+    if min_age &gt; max_age
+      errors[:base] &lt;&lt; "Min age must be less than or equal to max age"
+    end
+    if start_date &gt; end_date
+      errors[:base] &lt;&lt; "Start date must come before end date"
+    end
+    if meets_on.length == 0
+      errors[:base] &lt;&lt; "Must choose at least one day of the week"
+    end
+  end
 
 ##Supply Model##
 class Supply &lt; ActiveRecord::Base
@@ -137,7 +155,18 @@ gem 'devise-bootstrap-views'
 <p>Here's the form to create a new <code>student_class</code>:</p>
 
 <pre><code>&lt;div class="container"&gt;
-&lt;div class="col-md-6 col-md-offset-3"&gt;
+&lt;div class="col-md-6"&gt;
+  &lt;% if @student_class.errors.any? %&gt;
+    &lt;div id="error_explanation"&gt;
+      &lt;h2&gt;
+        &lt;%= pluralize(@student_class.errors.count, "Error") %&gt; prohibited this class from being saved:&lt;/h2&gt;
+      &lt;ul&gt;
+      &lt;% @student_class.errors.full_messages.each do |msg| %&gt;
+        &lt;li&gt;&lt;%= msg %&gt;&lt;/li&gt;
+      &lt;% end %&gt;
+      &lt;/ul&gt;
+    &lt;/div&gt;
+  &lt;% end %&gt;
 &lt;%= bootstrap_form_for @student_class do |f| %&gt;
   &lt;%= f.text_field :name %&gt;
   &lt;%= f.select :min_age, options_for_select(1..20) %&gt;
@@ -152,10 +181,30 @@ gem 'devise-bootstrap-views'
                           {},
                           { :multiple =&gt; true, :size =&gt; 7}
               ) %&gt;
-              &lt;%= f.time_select :start_time, { :ignore_date =&gt; true, :minute_step =&gt; 15 } %&gt;
-              &lt;%= f.time_select :end_time, { :ignore_date =&gt; true, :minute_step =&gt; 15 } %&gt;
-  &lt;%= f.text_field(:start_date, :data =&gt; {:provide =&gt; "datepicker"})%&gt;
-  &lt;%= f.text_field(:end_date, :data =&gt; {:provide =&gt; "datepicker"})%&gt;
+              &lt;%= f.time_select :start_time, 
+                  :combined =&gt; true,
+                  :default =&gt; Time.now.change(:hour =&gt; 8, :min =&gt; 00),
+                  :minute_interval =&gt; 15,
+                  :time_separator =&gt; "",
+                  :start_hour =&gt; 6,
+                  :start_minute =&gt; 30,
+                  :end_hour =&gt; 20,
+                  :end_minute =&gt; 00,
+                  :ignore_date =&gt; true
+              %&gt;
+            &lt;%= f.time_select :end_time, 
+                  :combined =&gt; true,
+                  :default =&gt; Time.now.change(:hour =&gt; 14, :min =&gt; 00),
+                  :minute_interval =&gt; 15,
+                  :time_separator =&gt; "",
+                  :start_hour =&gt; 6,
+                  :start_minute =&gt; 30,
+                  :end_hour =&gt; 20,
+                  :end_minute =&gt; 00,
+                  :ignore_date =&gt; true
+              %&gt;
+  &lt;%= f.text_field(:start_date, :data =&gt; {:provide =&gt; "datepicker"}, value: f.object.start_date.try(:strftime, "%m/%d/%Y"))%&gt;
+  &lt;%= f.text_field(:end_date, :data =&gt; {:provide =&gt; "datepicker"}, value: f.object.end_date.try(:strftime, "%m/%d/%Y"))%&gt;
   &lt;p&gt;Supplies:&lt;/p&gt;
   &lt;%= f.fields_for :supplies do |supply| %&gt;
     &lt;%= supply.text_field :name %&gt;
@@ -166,6 +215,8 @@ gem 'devise-bootstrap-views'
 &lt;/div&gt;
 &lt;/div&gt;
 </code></pre>
+
+<p>In the <code>time_select</code>s, I'm taking advantage of the gem <code>combined_time_select</code>, which is handy for creating a simple time picker in forms.  It should be noted that a certain amount of string wrangling and conversion is necessary when validating dates.  To ensure that, for example, the start date of a class must be earlier than the end date, one must convert those strings into <code>Date</code> objects before saving in the database, and convert them back into user-friendly strings when displaying the information in the browser.</p>
 
 <p>Note the creation of the <code>supplies</code> resource is nested within the form, allowing the creation (or editing) of supplies when creating (or editing) classes.  The nested form depends on a method in the <code>StudentClass</code> called <code>supplies_attributes=</code>.  If the object <code>respond_to? supplies_attributes=', The form_for helper will wrap the data from the nested form into a hash object called</code>supplies_attributes<code>.  To finalize this functionality,</code>supplies_attributes: [:name, :amount]<code>is added to the permitted params method in</code>student_classes_controller.rb`</p>
 
@@ -216,6 +267,11 @@ end
 </code></pre>
 
 <p>While it takes a few minutes of setup time, employing Pundit helps you clean up your controller code by abstracting away the logic to determine what the user's role is and if she should be permitted to execute the requested action.</p>
+
+<h3>
+<a id="wrapping-up" class="anchor" href="#wrapping-up" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Wrapping Up</h3>
+
+<p>While a lot of the focus is placed on large-scale enterprise software development, it's important to recognize the utility that Rails provides a developer for producing useful tools for small organizations. This application could easily develop into a valuable service for a school or organization by expanding its functionality to include the posting of schedules, newsletters, and accepting and scheduling recurring payments.  The inclusion of an authorization scheme like Pundit, along with an authentication system like Devise and OAuth will ensure that data will be kept safe and the site can be easily administered by the end user.</p>
         </section>
 
         <footer>
