@@ -28,9 +28,17 @@ class StudentClass < ActiveRecord::Base
   end
 
   def student_class_validator
-    binding.pry
-    if record.min_age > record.max_age
-      record.errors[:base] << "Min Age must be less than or equal to Max Age."
+    if start_time > end_time
+      errors[:base] << "Start time must be before end time"
+    end
+    if min_age > max_age
+      errors[:base] << "Min age must be less than or equal to max age"
+    end
+    if start_date > end_date
+      errors[:base] << "Start date must come before end date"
+    end
+    if meets_on.length == 0
+      errors[:base] << "Must choose at least one day of the week"
     end
   end
 

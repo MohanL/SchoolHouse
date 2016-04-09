@@ -1,12 +1,19 @@
 <h1>Students#index</h1>
 <p>Find me in app/views/students/index.html.erb</p>
+
 <ul>
-<% @students.each do |student| %>
-  <li>
-    <%= link_to student.name, student %>
-  </li>
-<% end %>
+  <% @students.each do |student| %>
+    <li>
+      <% if params[:user_id] %>
+        <%= link_to student.name, user_student_path(id: student.id) %>
+      <% else %>
+        <%= link_to student.name, student %>
+      <% end %>
+    </li>
+  <% end %>
 </ul>
 <br>
+<%= link_to "Add Student", new_student_path %><br>
+
 <%= link_to "Go Back", request.referrer %>
 

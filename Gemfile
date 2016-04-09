@@ -23,8 +23,7 @@ gem 'devise_invitable'
 gem 'omniauth'
 gem 'omniauth-facebook'
 gem 'pundit'
-gem 'factory_girl_rails'
-gem 'faker'
+gem 'combined_time_select'
 
 group :development do
   gem 'web-console', '~> 2.0'
@@ -33,10 +32,21 @@ end
 
 group :development, :test do
   gem 'byebug'
+  gem 'dotenv-rails'
   gem 'pry'
+  gem 'factory_girl_rails'
+  gem 'faker'
   gem 'rspec-rails'
+  gem 'rspec-collection_matchers'
   gem 'sqlite3'
   gem 'spring'
+end
+
+group :test do
+  gem 'capybara', '~> 2.7.0'
+  gem 'database_cleaner', '~> 1.0.1'
+  gem 'launchy', '~> 2.3.0'
+  gem 'selenium-webdriver', '~> 2.35.1'
 end
 
 group :production do

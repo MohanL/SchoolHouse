@@ -10,7 +10,10 @@ Rails.application.routes.draw do
     resources :students, only: [:show, :index]
   end
 
-  resources :users
+  resources :users do
+    resources :students, only: [:show, :index]
+  end
+
   resources :students
   resources :supplies
 

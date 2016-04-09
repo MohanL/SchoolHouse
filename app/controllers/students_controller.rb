@@ -2,6 +2,8 @@ class StudentsController < ApplicationController
   def index
     if params[:student_class_id]
       @students = StudentClass.find(params[:student_class_id]).students
+    elsif params[:user_id]
+      @students = User.find(params[:user_id]).students 
     else
       @students = Student.all
     end
@@ -39,6 +41,7 @@ class StudentsController < ApplicationController
   end
 
   def destroy
+    @student = Student.find(params[:id])
     authorize @student
     @student.delete
     redirect_to current_user

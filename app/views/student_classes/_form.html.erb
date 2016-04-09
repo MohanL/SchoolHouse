@@ -1,5 +1,16 @@
 <div class="container">
-<div class="col-md-6 col-md-offset-3">
+<div class="col-md-6">
+  <% if @student_class.errors.any? %>
+    <div id="error_explanation">
+      <h2>
+        <%= pluralize(@student_class.errors.count, "Error") %> prohibited this class from being saved:</h2>
+      <ul>
+      <% @student_class.errors.full_messages.each do |msg| %>
+        <li><%= msg %></li>
+      <% end %>
+      </ul>
+    </div>
+  <% end %>
 <%= bootstrap_form_for @student_class do |f| %>
   <%= f.text_field :name %>
   <%= f.select :min_age, options_for_select(1..20) %>
@@ -14,10 +25,30 @@
                           {},
                           { :multiple => true, :size => 7}
               ) %>
-              <%= f.time_select :start_time, { :ignore_date => true, :minute_step => 15 } %>
-              <%= f.time_select :end_time, { :ignore_date => true, :minute_step => 15 } %>
-  <%= f.text_field(:start_date, :data => {:provide => "datepicker"})%>
-  <%= f.text_field(:end_date, :data => {:provide => "datepicker"})%>
+              <%= f.time_select :start_time, 
+                  :combined => true,
+                  :default => Time.now.change(:hour => 8, :min => 00),
+                  :minute_interval => 15,
+                  :time_separator => "",
+                  :start_hour => 6,
+                  :start_minute => 30,
+                  :end_hour => 20,
+                  :end_minute => 00,
+                  :ignore_date => true
+              %>
+            <%= f.time_select :end_time, 
+                  :combined => true,
+                  :default => Time.now.change(:hour => 14, :min => 00),
+                  :minute_interval => 15,
+                  :time_separator => "",
+                  :start_hour => 6,
+                  :start_minute => 30,
+                  :end_hour => 20,
+                  :end_minute => 00,
+                  :ignore_date => true
+              %>
+  <%= f.text_field(:start_date, :data => {:provide => "datepicker"}, value: f.object.start_date.try(:strftime, "%m/%d/%Y"))%>
+  <%= f.text_field(:end_date, :data => {:provide => "datepicker"}, value: f.object.end_date.try(:strftime, "%m/%d/%Y"))%>
   <p>Supplies:</p>
   <%= f.fields_for :supplies do |supply| %>
     <%= supply.text_field :name %>

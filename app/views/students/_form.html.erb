@@ -1,5 +1,16 @@
 <div class="container">
-<div class="col-md-6 col-md-offset-3">
+<div class="col-md-6">
+  <% if @student.errors.any? %>
+    <div id="error_explanation">
+      <h2>
+        <%= pluralize(@student.errors.count, "Error") %> prohibited this class from being saved:</h2>
+      <ul>
+      <% @student.errors.full_messages.each do |msg| %>
+        <li><%= msg %></li>
+      <% end %>
+      </ul>
+    </div>
+  <% end %>
 <%= bootstrap_form_for @student do |f| %>
   <%= f.text_field :name %>
   <% if current_user.admin? %>
