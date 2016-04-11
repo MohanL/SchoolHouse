@@ -4,6 +4,13 @@ class StudentClass < ActiveRecord::Base
   accepts_nested_attributes_for :supplies
   serialize :meets_on
   validates :name, presence: true
+  validates :start_date, presence: true
+  validates :end_date, presence: true
+  validates :start_time, presence: true
+  validates :end_time, presence: true
+  validates :min_age, presence: true
+  validates :max_age, presence: true
+  validates :meets_on, presence: true
   validate :student_class_validator
   before_validation do |model|
     model.meets_on.reject!(&:blank?) if model.meets_on
@@ -28,17 +35,19 @@ class StudentClass < ActiveRecord::Base
   end
 
   def student_class_validator
-    if start_time > end_time
-      errors[:base] << "Start time must be before end time"
-    end
-    if min_age > max_age
-      errors[:base] << "Min age must be less than or equal to max age"
-    end
-    if start_date > end_date
-      errors[:base] << "Start date must come before end date"
-    end
-    if meets_on.length == 0
-      errors[:base] << "Must choose at least one day of the week"
+    if (start_time && end_time && min_age && max_age && start_date && end_date && meets_on)
+      if start_time > end_time
+        errors[:time] << "Start time must be before end time"
+      end
+      if min_age > max_age
+        errors[:age] << "Min age must be less than or equal to max age"
+      end
+      if start_date > end_date
+        errors[:date] << "Start date must come before end date"
+      end
+      if meets_on.length == 0
+        errors[:meets] << "Must choose at least one day of the week"
+      end
     end
   end
 

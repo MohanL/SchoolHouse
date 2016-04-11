@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160318151316) do
+ActiveRecord::Schema.define(version: 20160409214414) do
 
   create_table "student_classes", force: :cascade do |t|
     t.datetime "created_at", null: false
@@ -31,7 +31,7 @@ ActiveRecord::Schema.define(version: 20160318151316) do
     t.integer  "student_class_id"
     t.datetime "created_at",       null: false
     t.datetime "updated_at",       null: false
-    t.string   "birthday"
+    t.date     "birthday"
     t.integer  "user_id"
   end
 
@@ -40,7 +40,7 @@ ActiveRecord::Schema.define(version: 20160318151316) do
 
   create_table "supplies", force: :cascade do |t|
     t.string   "name"
-    t.string   "date_due"
+    t.date     "date_due"
     t.string   "amount"
     t.integer  "student_class_id"
     t.datetime "created_at",       null: false

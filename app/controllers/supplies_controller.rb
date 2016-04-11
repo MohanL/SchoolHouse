@@ -18,15 +18,23 @@ class SuppliesController < ApplicationController
   def create
     @supply = Supply.new
     authorize @supply
-    @supply.date_due = StudentClass.find(supply_params[:student_class_id]).start_date
-    @supply.update_attributes(supply_params)
-    redirect_to @supply
+    @supply.set_due_date(supply_params[:student_class_id])
+    if @supply.update_attributes(supply_params)
+      flash[:notice] = "New Supply Successfully Created"
+      redirect_to @supply
+    else
+      render :new
+    end
   end
 
   def update
     authorize @supply
-    @supply.update_attributes(supply_params)
-    redirect_to @supply
+    if @supply.update_attributes(supply_params)
+      flash[:notice] = "Supply Successfully Updated"
+      redirect_to @supply
+    else
+      render :edit
+    end
   end
 
   def show

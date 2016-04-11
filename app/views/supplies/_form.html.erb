@@ -1,8 +1,6 @@
 <%= bootstrap_form_for @supply do |f| %>
   <%= f.text_field :name %>
   <%= f.text_field :amount %>
-  <% if @supply.student_class == nil %>
-    <%= f.collection_select :student_class_id, StudentClass.all, :id, :class_name %>
-  <% end %>
+  <%= f.collection_select :student_class_id, StudentClass.all, :id, :class_name %>
   <%= f.submit %>
 <% end %>
