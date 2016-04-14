@@ -1,14 +1,12 @@
-<h1>Show page for <%= @user.email %>  </h1>
+<h1>Welcome, <%= @user.name %>  </h1>
 <% if @students %>
   <h3>Students:</h3>
   <ul>
     <% @students.each do |student| %>
       <li>
-        <ul>
-          <li><%= student.name %></li>
-          <li><%= student.birthday %></li>
-          <li><%= student.student_class.name %></li>
-        </ul>
+          <p>Name: <%= link_to student.name, student %></p>
+          <p>Birthday: <%= student.birthday %></p>
+          <p>Class: <%= link_to student.student_class.name, student.student_class %></p>
       </li>
     <% end %>
   </ul>

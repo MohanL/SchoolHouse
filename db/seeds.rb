@@ -42,6 +42,7 @@ supply2.save!
 20.times do
   user = User.new
   user.email = Faker::Internet.email
+  user.name = Faker::Name.name
   user.password = 'password'
   user.password_confirmation = 'password'
   user.save!
