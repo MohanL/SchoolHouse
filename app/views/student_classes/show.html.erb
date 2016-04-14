@@ -1,6 +1,4 @@
-<h1>StudentClasses#show</h1>
-<p>Find me in app/views/student_classes/show.html.erb</p>
-<p>Class Name: <%= @student_class.name %></p>
+<h1><%= @student_class.name %></h1>
 <p>Age range: <%= @student_class.min_age %> - <%= @student_class.max_age %></p>
 <p>Meets from <%= StudentClass.pretty_time(@student_class.start_time) %> to <%= StudentClass.pretty_time(@student_class.end_time) %> on</p>
 <ul>
@@ -10,16 +8,28 @@
 </ul>
 <p>Supplies:</p>
 <% @student_class.supplies.each do |supply| %>
-  <%= link_to "#{supply.name} - #{number_to_currency(supply.amount)}", supply %> (<%= link_to "Delete", supply, :method => :delete, :data => {:confirm => "Are you sure?"} %>)<br>
+  <% if current_user.admin? %>
+    <%= link_to "#{supply.name} - #{number_to_currency(supply.amount)}", supply %> (<%= link_to "Delete", supply, :method => :delete, :data => {:confirm => "Are you sure?"} %>)<br>
+  <% else %>
+    <%= "#{supply.name} - #{number_to_currency(supply.amount)}" %>
+    <br>
+  <% end %>
 <% end %>
 <br>
 <p>Enrolled Students</p>
 <ul>
 <% @student_class.students.each do |student| %>
-  <li><%= link_to student.name, student_class_student_path(@student_class, student) %></li>
+  <% if current_user.admin? %>
+    <li><%= link_to student.name, student_class_student_path(@student_class, student) %></li>
+  <% else %>
+    <li><%= student.name %></li>
+  <% end %>
 <% end %>
 <br>
-<%= link_to "Edit", edit_student_class_path(@student_class)%> | 
-<%= link_to "Delete", @student_class, :method => :delete, :data => {:confirm => "Are you sure?"} %><br>
+
+<% if current_user.admin? %>
+  <%= link_to "Edit", edit_student_class_path(@student_class)%> | 
+  <%= link_to "Delete", @student_class, :method => :delete, :data => {:confirm => "Are you sure?"} %><br>
+<% end %>
 <%= link_to "Go Back", request.referrer %>
 </ul>

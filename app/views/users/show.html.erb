@@ -1,4 +1,10 @@
-<h1>Welcome, <%= @user.name %>  </h1>
+<% if current_user.admin? %>
+  <h1> <%= @user.name %></h1>
+  <h6> <%= @user.email %></h6>
+<% else %>
+  <h1>Welcome, <%= @user.name %></h1>
+<% end %>
+
 <% if @students %>
   <h3>Students:</h3>
   <ul>
