@@ -11,13 +11,23 @@ class StudentsController < ApplicationController
 
   def new
     @student = Student.new
+    respond_to do |format|
+      format.html { render :new }
+      format.js {}
+    end
   end
 
   def create
     @student = Student.new(student_params)
     authorize @student
-    @student.save
-    redirect_to @student
+    respond_to do |format|
+      if @student.save
+        format.html { redirect_to @student }
+        format.js {}
+      else 
+        format.html { render :new }
+      end
+    end
   end
 
   def edit
@@ -50,6 +60,13 @@ class StudentsController < ApplicationController
   private
 
   def student_params
+    convert_date if params[:student][:birthday].class == String
     params.require(:student).permit(:name, :birthday, :student_class_id, :user_id)
   end
+
+  def convert_date
+    birthday = params[:student][:birthday] 
+    params[:student][:birthday] = Date.strptime(birthday, '%m/%d/%Y')
+  end
+
 end

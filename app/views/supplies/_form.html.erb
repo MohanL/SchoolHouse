@@ -1,4 +1,4 @@
-<%= bootstrap_form_for @supply do |f| %>
+<%= bootstrap_form_for @supply, :remote => true do |f| %>
   <%= f.text_field :name %>
   <%= f.text_field :amount %>
   <%= f.collection_select :student_class_id, StudentClass.all, :id, :class_name %>

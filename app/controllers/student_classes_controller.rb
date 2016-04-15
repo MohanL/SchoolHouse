@@ -9,6 +9,10 @@ class StudentClassesController < ApplicationController
     @student_class = StudentClass.new
     @student_class.supplies.build
     authorize @student_class
+    respond_to do |format|
+      format.html { render :new }
+      format.js {}
+    end
   end
 
   def create
@@ -17,7 +21,10 @@ class StudentClassesController < ApplicationController
     authorize @student_class
     if @student_class.valid?
       @student_class.save
-      redirect_to @student_class
+      respond_to do |format|
+        format.html { redirect_to @student_class, notice: "Class Successfully Created" }
+        format.js {}
+      end
     else
       render :new
     end

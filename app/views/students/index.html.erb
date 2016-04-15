@@ -1,19 +1,16 @@
-<h1>Students#index</h1>
-<p>Find me in app/views/students/index.html.erb</p>
+<h1>Student List</h1>
 
-<ul>
+<div id="build_form">
+  <%= render 'link' %>
+</div>
+
+<div id="new_form">
+</div>
+
+<ul id="student_list">
   <% @students.each do |student| %>
-    <li>
-      <% if params[:user_id] %>
-        <%= link_to student.name, user_student_path(id: student.id) %>
-      <% else %>
-        <%= link_to student.name, student %>
-      <% end %>
-    </li>
+    <%= render 'students/one_line_student', student: student %>
   <% end %>
 </ul>
-<br>
-<%= link_to "Add Student", new_student_path %><br>
-
 <%= link_to "Go Back", request.referrer %>
 

@@ -1,11 +1,12 @@
 <h1>Listing Supplies</h1>
-<ul>
-<% @supplies.each do |supply| %>
-  <li>
-    <%= link_to supply.student_class.class_name, supply %><br>
-    <%= supply.name %><br>
-    <%= number_to_currency(supply.amount) %><br>
-    <%= supply.date_due %><br>
-  </li>
-<% end %> 
+<div id="build_form"> 
+  <%= render 'link' %>
+</div>
+
+<div id="new_form">
+</div>
+
+<ul id="supplies">
+  <%= render @supplies %>
 </ul>
+

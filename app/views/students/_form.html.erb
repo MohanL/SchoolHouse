@@ -11,7 +11,7 @@
       </ul>
     </div>
   <% end %>
-<%= bootstrap_form_for @student do |f| %>
+  <%= bootstrap_form_for @student, :remote => true do |f| %>
   <%= f.text_field :name %>
   <% if current_user.admin? %>
     <%= f.collection_select :user_id, User.guardians, :id, :email, label: "Parent" %>

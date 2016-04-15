@@ -15,8 +15,8 @@
     <!-- Collect the nav links, forms, and other content for toggling -->
     <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
       <ul class="nav navbar-nav">
-        <li><%= link_to "My Students", user_students_path(current_user) %></li>
-        <li><%= link_to "Classes", student_classes_path %></li>
+        <li><%= link_to "My Students", current_user %></li>
+        <li><%= link_to "Available Classes", student_classes_path %></li>
       </ul>
       <ul class="nav navbar-nav navbar-right">
         <li>

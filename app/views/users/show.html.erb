@@ -5,16 +5,16 @@
   <h1>Welcome, <%= @user.name %></h1>
 <% end %>
 
+<div id="build_form">
+  <%= render 'link' %>
+</div>
+
+<div id="new_form">
+</div>
+
 <% if @students %>
   <h3>Students:</h3>
-  <ul>
-    <% @students.each do |student| %>
-      <li>
-          <p>Name: <%= link_to student.name, student %></p>
-          <p>Birthday: <%= student.birthday %></p>
-          <p>Class: <%= link_to student.student_class.name, student.student_class %></p>
-      </li>
-    <% end %>
+  <ul id="students">
+    <%= render @students %>
   </ul>
 <% end %>
-<%= link_to "Add Student", new_student_path %>

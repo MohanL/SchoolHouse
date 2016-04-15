@@ -1,7 +1,14 @@
-<h1>StudentClasses#index</h1>
-<p>Find me in app/views/student_classes/index.html.erb</p>
+<h1>Class List</h1>
+<% if current_user.admin? %>
+<div id="build_form">
+  <%= render 'link' %>
+</div>
+
+<div id="new_form">
+</div>
+<% end %>
+
+<br>
 <ul>
-  <% @student_classes.each do |student_class| %>
-    <li><%= link_to student_class.class_name, student_class_path(student_class) %></li>
-  <% end %>
+  <%= render @student_classes %>
 </ul>

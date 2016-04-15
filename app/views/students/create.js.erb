@@ -1,0 +1,8 @@
+console.log("create.js.erb file");
+if(document.getElementById('students')) {
+  $('ul#students').append("<%= j render('students/student', student: @student) %>");
+} else {
+  $('ul#student_list').append("<%= j render('students/one_line_student', student: @student) %>");
+}
+$('form').html('');
+$('#build_form').html("<%= j render('users/link') %>");

@@ -3,12 +3,17 @@ class SuppliesController < ApplicationController
 
   def index
     @supplies = Supply.all
+    @supply = Supply.new
     authorize @supplies
   end
 
   def new
     @supply = Supply.new
     authorize @supply
+    respond_to do |format|
+      format.html { render :new }
+      format.js {}
+    end
   end
 
   def edit
@@ -19,11 +24,13 @@ class SuppliesController < ApplicationController
     @supply = Supply.new
     authorize @supply
     @supply.set_due_date(supply_params[:student_class_id])
-    if @supply.update_attributes(supply_params)
-      flash[:notice] = "New Supply Successfully Created"
-      redirect_to @supply
-    else
-      render :new
+    respond_to do |format|
+      if @supply.update_attributes(supply_params)
+        format.html { redirect_to @supply, notice: "New Supply Successfully Created" }
+        format.js {}
+      else
+        format.html { render :new }
+      end
     end
   end
 
