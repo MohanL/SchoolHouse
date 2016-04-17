@@ -6,24 +6,28 @@
   <li><%= day %></li>
 <% end %>
 </ul>
+
+<div id="supply_list">
 <p>Supplies:</p>
+<ul id="supplies">
 <% @student_class.supplies.each do |supply| %>
-  <% if current_user.admin? %>
-    <%= link_to "#{supply.name} - #{number_to_currency(supply.amount)}", supply %> (<%= link_to "Delete", supply, :method => :delete, :data => {:confirm => "Are you sure?"} %>)<br>
-  <% else %>
-    <%= "#{supply.name} - #{number_to_currency(supply.amount)}" %>
-    <br>
-  <% end %>
+  <%= render 'supply', {supply: supply, student_class: @student_class} %>
 <% end %>
+</ul>
+</div>
+
+<div id="build_form">
+  <%= link_to 'Add Supply Fee', new_supply_path(:student_class_id => @student_class.id), remote: true %>
+</div>
+
+<div id="new_form">
+</div>
+
 <br>
 <p>Enrolled Students</p>
 <ul>
 <% @student_class.students.each do |student| %>
-  <% if current_user.admin? %>
-    <li><%= link_to student.name, student_class_student_path(@student_class, student) %></li>
-  <% else %>
-    <li><%= student.name %></li>
-  <% end %>
+  <%= render 'student', student: student %>
 <% end %>
 <br>
 

@@ -1,0 +1,8 @@
+<% if current_user.admin? %>
+  <li id="<%= supply.id %>">
+    <%= link_to "#{supply.name} - #{number_to_currency(supply.amount)}", supply %> 
+    (<%= link_to "Delete", supply, :method => :delete, :data => {:confirm => "Are you sure?"}, :remote => true %>)
+  </li>
+<% else %>
+  <li><%= "#{supply.name} - #{number_to_currency(supply.amount)}" %></li>
+<% end %>

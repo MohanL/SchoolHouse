@@ -49,8 +49,11 @@ class SuppliesController < ApplicationController
 
   def destroy
     authorize @supply
-    @supply.delete
-    redirect_to supplies_path
+    @id = @supply.delete.id
+    respond_to do |format|
+     format.html { redirect_to supplies_path }
+     format.js {}
+    end
   end
 
   private

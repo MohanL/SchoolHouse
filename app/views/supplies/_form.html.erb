@@ -1,6 +1,10 @@
 <%= bootstrap_form_for @supply, :remote => true do |f| %>
   <%= f.text_field :name %>
   <%= f.text_field :amount %>
-  <%= f.collection_select :student_class_id, StudentClass.all, :id, :class_name %>
+  <% if params[:student_class_id] %>
+    <%= f.hidden_field :student_class_id, :value => params[:student_class_id] %>
+  <% else %>
+    <%= f.collection_select :student_class_id, StudentClass.all, :id, :class_name %>
+  <% end %>
   <%= f.submit %>
 <% end %>

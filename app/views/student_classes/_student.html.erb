@@ -1,0 +1,5 @@
+<% if current_user.admin? %>
+  <li><%= link_to student.name, student_class_student_path(@student_class, student) %></li>
+<% else %>
+  <li><%= student.name %></li>
+<% end %>
