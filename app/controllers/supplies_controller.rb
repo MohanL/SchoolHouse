@@ -18,6 +18,10 @@ class SuppliesController < ApplicationController
 
   def edit
     authorize @supply
+    respond_to do |format|
+      format.html { render :edit }
+      format.js {}
+    end
   end
 
   def create
@@ -36,11 +40,13 @@ class SuppliesController < ApplicationController
 
   def update
     authorize @supply
-    if @supply.update_attributes(supply_params)
-      flash[:notice] = "Supply Successfully Updated"
-      redirect_to @supply
-    else
-      render :edit
+    respond_to do |format| 
+      if @supply.update_attributes(supply_params)
+        format.html { redirect_to @supply, :notice => "Supply Successfully Updated" }
+        format.js {}
+      else
+        render :edit
+      end
     end
   end
 

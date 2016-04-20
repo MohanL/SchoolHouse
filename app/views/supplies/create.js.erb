@@ -5,4 +5,4 @@ if(document.getElementById('supply_list')) {
   $('ul#supplies').append("<%= j render('supplies/supply', supply: @supply) %>");
 }
 $('form').html('');
-$('div#build_form').html("<%= j render('supplies/link') %>");
+$('#build_form').html("<%= j render('supplies/link') %>");

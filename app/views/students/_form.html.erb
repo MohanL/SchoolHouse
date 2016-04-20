@@ -18,7 +18,7 @@
   <% else %>
     <%= f.hidden_field :user_id, value: current_user.id %>
   <% end %>
-  <%= f.text_field(:birthday, :data => {:provide => "datepicker"}) %>
+  <%= f.text_field :birthday, :data => {:provide => "datepicker"}, :value => (f.object.birthday.strftime('%m/%d/%Y') if f.object.birthday) %>
   <%= f.collection_select(:student_class_id, StudentClass.all, :id, :class_name, label: "Class") %>
   <%= f.submit %>
 <% end %>

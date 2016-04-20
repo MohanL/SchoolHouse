@@ -1,39 +1,37 @@
-<h1><%= @student_class.name %></h1>
-<p>Age range: <%= @student_class.min_age %> - <%= @student_class.max_age %></p>
-<p>Meets from <%= StudentClass.pretty_time(@student_class.start_time) %> to <%= StudentClass.pretty_time(@student_class.end_time) %> on</p>
-<ul>
-<% @student_class.meets_on.each do |day| %>
-  <li><%= day %></li>
-<% end %>
-</ul>
+<div id="student_class">
+  <h1><%= @student_class.name %></h1>
+  <p>Age range: <%= @student_class.min_age %> - <%= @student_class.max_age %></p>
+  <p>Meets from <%= StudentClass.pretty_time(@student_class.start_time) %> to <%= StudentClass.pretty_time(@student_class.end_time) %> on</p>
+  <ul>
+  <% @student_class.meets_on.each do |day| %>
+    <li><%= day %></li>
+  <% end %>
+  </ul>
 
-<div id="supply_list">
-<p>Supplies:</p>
-<ul id="supplies">
-<% @student_class.supplies.each do |supply| %>
-  <%= render 'supply', {supply: supply, student_class: @student_class} %>
-<% end %>
-</ul>
+  <div id="supply_list">
+    <p>Supplies: <span id="build_form"><%= link_to '(Add Supply Fee)', new_supply_path(:student_class_id => @student_class.id), remote: true %></span></p>
+  <ul id="supplies">
+  <% @student_class.supplies.each do |supply| %>
+    <%= render 'supply', {supply: supply, student_class: @student_class} %>
+  <% end %>
+  </ul>
+  </div>
+
+  <div id="new_form">
+  </div>
+
+  <% if current_user.admin? %>
+    <%= link_to "Edit", edit_student_class_path(@student_class), :remote => true %> | 
+    <%= link_to "Delete", @student_class, :method => :delete, :data => {:confirm => "Are you sure?"} %><br>
+  <% end %>
+  <br>
+  <p>Enrolled Students</p>
+  <ul>
+  <% @student_class.students.each do |student| %>
+    <%= render 'student', student: student %>
+  <% end %>
+  <br>
+
+  <%= link_to "Go Back", request.referrer %>
+  </ul>
 </div>
-
-<div id="build_form">
-  <%= link_to 'Add Supply Fee', new_supply_path(:student_class_id => @student_class.id), remote: true %>
-</div>
-
-<div id="new_form">
-</div>
-
-<br>
-<p>Enrolled Students</p>
-<ul>
-<% @student_class.students.each do |student| %>
-  <%= render 'student', student: student %>
-<% end %>
-<br>
-
-<% if current_user.admin? %>
-  <%= link_to "Edit", edit_student_class_path(@student_class)%> | 
-  <%= link_to "Delete", @student_class, :method => :delete, :data => {:confirm => "Are you sure?"} %><br>
-<% end %>
-<%= link_to "Go Back", request.referrer %>
-</ul>

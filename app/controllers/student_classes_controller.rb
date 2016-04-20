@@ -35,14 +35,22 @@ class StudentClassesController < ApplicationController
 
   def edit
     authorize @student_class
+    respond_to do |format|
+      format.html { render :edit }
+      format.js {}
+    end
   end
 
   def update
     convert_times 
     authorize @student_class
     if @student_class.valid?
-      @student_class.update_attributes(student_class_params)
-      redirect_to @student_class
+      respond_to do |format|
+        if @student_class.update_attributes(student_class_params)
+          format.html { redirect_to @student_class, notice: "Class Successfully Updated" }
+          format.js {}
+        end
+      end
     else
       binding.pry
       render :edit

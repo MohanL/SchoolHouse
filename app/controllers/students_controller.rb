@@ -33,13 +33,23 @@ class StudentsController < ApplicationController
   def edit
     @student = Student.find(params[:id])
     authorize @student
+    respond_to do |format|
+      format.html { render :edit }
+      format.js {}
+    end
   end
 
   def update
     @student = Student.find(params[:id])
     authorize @student
-    @student.update_attributes(student_params)
-    redirect_to @student
+    respond_to do |format|
+      if @student.update_attributes(student_params)
+        format.html { redirect_to @student }
+        format.js {}
+      else
+        format.html { render :edit }
+      end
+    end
   end
 
   def show

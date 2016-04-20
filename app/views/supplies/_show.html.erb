@@ -1,0 +1,6 @@
+<h1>Supplies: <%= @supply.name %></h1>
+Class: <%= link_to @supply.student_class.class_name, student_class_path(@supply.student_class) %><br>
+Amount: <%= number_to_currency(@supply.amount) %><br>
+<%= link_to "Edit", edit_supply_path(@supply), :remote => true %> | 
+<%= link_to "Delete", @supply, :method => :delete, :data => {confirm: "Are you sure?"} %><br>
+<%= link_to "Go Back", request.referrer %>
