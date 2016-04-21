@@ -52,7 +52,6 @@ class StudentClassesController < ApplicationController
         end
       end
     else
-      binding.pry
       render :edit
     end
   end
