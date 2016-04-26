@@ -8,5 +8,9 @@ class Supply < ActiveRecord::Base
   def set_due_date(student_class)
     self.date_due = StudentClass.find(student_class).start_date
   end
+
+  def class_name
+    self.student_class.name
+  end
 end
 

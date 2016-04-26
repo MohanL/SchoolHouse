@@ -18,10 +18,7 @@ class SuppliesController < ApplicationController
 
   def edit
     authorize @supply
-    respond_to do |format|
-      format.html { render :edit }
-      format.js {}
-    end
+    render :edit
   end
 
   def create
@@ -30,8 +27,9 @@ class SuppliesController < ApplicationController
     @supply.set_due_date(supply_params[:student_class_id])
     respond_to do |format|
       if @supply.update_attributes(supply_params)
-        format.html { redirect_to @supply, notice: "New Supply Successfully Created" }
-        format.js {}
+        format.json { render json: @supply.attributes.merge({data: {"class_name" => @supply.student_class.name, "amount" => @supply.amount}})}
+#        format.json { render json: @supply, :methods => {:class_name, number_to_currency(@supply.amount)}
+        format.html { redirect_to @supply, notice: "New Supply Successfully Created"}
       else
         format.html { render :new }
       end

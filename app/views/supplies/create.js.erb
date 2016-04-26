@@ -1,8 +1,0 @@
-console.log("create.js.erb file");
-if(document.getElementById('supply_list')) {
-  $('ul#supplies').append("<%= j render('student_classes/supply', supply: @supply) %>");
-} else {
-  $('ul#supplies').append("<%= j render('supplies/supply', supply: @supply) %>");
-}
-$('form').html('');
-$('#build_form').html("<%= j render('supplies/link') %>");

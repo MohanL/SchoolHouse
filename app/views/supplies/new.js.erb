@@ -1,3 +1,3 @@
 console.log("supplies - new.js.erb file");
-$('#new_form').html("<%= j render('supplies/form', supply: @supply)  %>");
-$('#build_form').html('');
+$('#supply_form').html("<%= j render('supplies/form', supply: @supply)  %>");
+addSubmitEvent($('form'));
