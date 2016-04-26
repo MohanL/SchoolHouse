@@ -28,7 +28,6 @@ class SuppliesController < ApplicationController
     respond_to do |format|
       if @supply.update_attributes(supply_params)
         format.json { render json: @supply.attributes.merge({data: {"class_name" => @supply.student_class.name, "amount" => @supply.amount}})}
-#        format.json { render json: @supply, :methods => {:class_name, number_to_currency(@supply.amount)}
         format.html { redirect_to @supply, notice: "New Supply Successfully Created"}
       else
         format.html { render :new }
@@ -40,8 +39,8 @@ class SuppliesController < ApplicationController
     authorize @supply
     respond_to do |format| 
       if @supply.update_attributes(supply_params)
+        format.json { render json: @supply.attributes.merge({data: {"class_name" => @supply.student_class.name, "amount" => @supply.amount}})}
         format.html { redirect_to @supply, :notice => "Supply Successfully Updated" }
-        format.js {}
       else
         render :edit
       end

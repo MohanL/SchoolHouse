@@ -1,3 +1,8 @@
 <div id="supply">
   <%= render 'show' %>
 </div>
+<div id="show_navigation">
+  <%= link_to "Edit", edit_supply_path(@supply), :remote => true %> | 
+  <%= link_to "Delete", @supply, :method => :delete, :data => {confirm: "Are you sure?"} %><br>
+  <%= link_to "Go Back", request.referrer %>
+</div>
