@@ -50,7 +50,7 @@ function postStudentClass(student_class){
 function parseSupplies(student_class){
   var supplies = '';
   student_class.supplies.forEach(function(supply){
-    supplies += "<li><a href='/supplies/" + supply.id + "'>" + supply.name + " - " + supply.amount + "<a data-confirm='Are you sure?' data-remote='true' rel='nofollow' data-method='delete' href='/supplies/" + supply.id + "'>Delete</a></li>";
+    supplies += "<li><a href='/supplies/" + supply.id + "'>" + supply.name + " - $" + supply.amount + " <a data-confirm='Are you sure?' data-remote='true' rel='nofollow' data-method='delete' href='/supplies/" + supply.id + "'>Delete</a></li>";
   });
   return supplies;
 };

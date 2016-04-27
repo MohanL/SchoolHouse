@@ -8,7 +8,7 @@
 </ul>
 
 <div id="supply_list">
-  <p id="supply_form">Supplies: <%= link_to '(Add Supply Fee)', new_supply_path(:student_class_id => @student_class.id), remote: true %></p>
+  <p id="supply_form">Supplies: <%= link_to '(Add Supply Fee)', new_supply_path(:student_class_id => @student_class.id), remote: true, id: 'nested_supply' %></p>
 <ul id="supplies">
 <% @student_class.supplies.each do |supply| %>
   <%= render 'supply', {supply: supply, student_class: @student_class} %>
