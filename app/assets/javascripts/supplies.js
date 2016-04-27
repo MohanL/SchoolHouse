@@ -1,4 +1,4 @@
-function addSubmitEvent(elem){
+function addSupplySubmitEvent(elem){
   $(elem).on("submit", function(e){
 
     $.ajax({

@@ -11,10 +11,6 @@ class StudentsController < ApplicationController
 
   def new
     @student = Student.new
-    respond_to do |format|
-      format.html { render :new }
-      format.js {}
-    end
   end
 
   def create
@@ -22,10 +18,10 @@ class StudentsController < ApplicationController
     authorize @student
     respond_to do |format|
       if @student.save
+        format.json { render json: @student.attributes.merge({data: {"class_name" => @student.student_class.name, "class_id" => @student.student_class.id}})}
         format.html { redirect_to @student }
-        format.js {}
       else 
-        format.html { render :new }
+        render :new
       end
     end
   end
@@ -33,10 +29,6 @@ class StudentsController < ApplicationController
   def edit
     @student = Student.find(params[:id])
     authorize @student
-    respond_to do |format|
-      format.html { render :edit }
-      format.js {}
-    end
   end
 
   def update
@@ -44,10 +36,10 @@ class StudentsController < ApplicationController
     authorize @student
     respond_to do |format|
       if @student.update_attributes(student_params)
+        format.json { render json: @student }
         format.html { redirect_to @student }
-        format.js {}
       else
-        format.html { render :edit }
+        render :edit
       end
     end
   end

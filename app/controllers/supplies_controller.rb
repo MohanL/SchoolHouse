@@ -10,15 +10,10 @@ class SuppliesController < ApplicationController
   def new
     @supply = Supply.new
     authorize @supply
-    respond_to do |format|
-      format.html { render :new }
-      format.js {}
-    end
   end
 
   def edit
     authorize @supply
-    render :edit
   end
 
   def create
@@ -30,7 +25,7 @@ class SuppliesController < ApplicationController
         format.json { render json: @supply.attributes.merge({data: {"class_name" => @supply.student_class.name, "amount" => @supply.amount}})}
         format.html { redirect_to @supply, notice: "New Supply Successfully Created"}
       else
-        format.html { render :new }
+        render :new
       end
     end
   end
