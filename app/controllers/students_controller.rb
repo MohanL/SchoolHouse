@@ -18,7 +18,7 @@ class StudentsController < ApplicationController
     authorize @student
     respond_to do |format|
       if @student.save
-        format.json { render json: @student.attributes.merge({data: {"class_name" => @student.student_class.name, "class_id" => @student.student_class.id}})}
+        format.json { render json: @student.as_json(include: :student_class)}
         format.html { redirect_to @student }
       else 
         render :new
@@ -36,7 +36,7 @@ class StudentsController < ApplicationController
     authorize @student
     respond_to do |format|
       if @student.update_attributes(student_params)
-        format.json { render json: @student }
+        format.json { render json: @student.as_json(include: [:student_class, :user])}
         format.html { redirect_to @student }
       else
         render :edit

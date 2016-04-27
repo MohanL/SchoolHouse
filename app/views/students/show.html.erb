@@ -2,4 +2,9 @@
   <%= render 'show' %>
 </div>
 
+<div id="show_navigation">
+  <%= link_to "Edit", edit_student_path(@student), :remote => true %> | 
+  <%= link_to "Delete", @student, :method => :delete, :data => {confirm: "Are you sure?"} %><br>
+  <%= link_to "Go Back", request.referrer %>
+</div>
 

@@ -6,16 +6,34 @@ function addSupplySubmitEvent(elem){
       data: $(this).serialize(),
       type: ($("input[name='_method']").val() || this.method),
       success: function(response){
-        if (this.type == "PATCH") {
-          console.log("patch request");
-          $('div#supply').html("<h1>Supplies: " +  response.name + "</h1>Class: <a href='/classes/" + response.student_class_id + "'>" + response.data.class_name + "</a><br>Amount: " + response.data.amount);
-          $('#show_navigation').show();
-        } else if (this.type == "POST") {
-          $("ul#supplies").append("<li>Supplies: <a href='/supplies/" + response.id +"'>" + response.name + "</a><br> Class Name: <a href='/classes/" + response.student_class_id + "'>" + response.data.class_name + "</a><br> Amount: " + response.data.amount + "<br>Due: " + response.date_due + "<br></li>");
-          $('#supply_form').html("<a data-remote='true' href='/supplies/new'>(Add New Supplies)</a>");
-        }
+        var supply = createSupply(response);
+        this.type == "PATCH" ? patchSupply(supply) : postSupply(supply);
       }
     });
     e.preventDefault();
   });
 };
+
+function createSupply(response){
+  var supply = {
+    id: response.id,
+    name: response.name,
+    date_due: response.date_due,
+    amount: response.amount,
+    student_class_id: response.student_class_id,
+    student_class_name: function(){
+      return response.student_class.name + " - ages " + response.student_class.min_age + " to " + response.student_class.max_age;
+    }
+  };
+  return supply;
+}
+
+function postSupply(supply){
+    $("ul#supplies").append("<li>Supplies: <a href='/supplies/" + supply.id +"'>" + supply.name + "</a><br> Class Name: <a href='/classes/" + supply.student_class_id + "'>" + supply.student_class_name() + "</a><br> Amount: " + supply.amount + "<br>Due: " + supply.date_due + "<br></li>");
+    $('#supply_form').html("<a data-remote='true' href='/supplies/new'>(Add New Supplies)</a>");
+}
+
+function patchSupply(supply){
+    $('div#supply').html("<h1>Supplies: " +  supply.name + "</h1>Class: <a href='/classes/" + supply.student_class_id + "'>" + supply.student_class_name() + "</a><br>Amount: " + supply.amount);
+    $('#show_navigation').show();
+}

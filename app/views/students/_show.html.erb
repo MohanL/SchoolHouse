@@ -2,7 +2,4 @@
 <p>Birthday: <%= @student.birthday.strftime('%m/%d/%Y') %></p>
 <p>Class: <%= link_to @student.student_class.class_name, @student.student_class %></p>
 <p>Parent: <%= link_to @student.user.name, @student.user %></p>
-<%= link_to "Edit", edit_student_path(@student), :remote => true %> | 
-<%= link_to "Delete", @student, :method => :delete, :data => {confirm: "Are you sure?"} %><br>
-<%= link_to "Go Back", request.referrer %>
 

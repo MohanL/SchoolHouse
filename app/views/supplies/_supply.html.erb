@@ -1,6 +1,6 @@
 <li>
 Supplies: <%= link_to supply.name, supply %><br>
-Class Name: <%= link_to supply.student_class.class_name, supply %><br>
+Class Name: <%= link_to supply.student_class.class_name, supply.student_class  %><br>
 Amount: <%= number_to_currency(supply.amount) %><br>
 Due: <%= supply.date_due %><br>
 </li>
