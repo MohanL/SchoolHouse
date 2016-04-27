@@ -15,13 +15,14 @@ function addStudentSubmitEvent(elem){
 };
 
 function createStudent(response){
+  debugger;
   var student = {
     name: response.name,
     id: response.id,
-    student_class_id: response.student_class_id,
+    student_class_id: response.student_class.id,
     birthday: response.birthday,
-    parent_id: response.user.id,
-    parent_name: response.user.name,
+    parent_id: response.user_id,
+    parent_name: response.name,
     student_class_name: function(){
       return response.student_class.name + " - ages " + response.student_class.min_age + " to " + response.student_class.max_age;
     }

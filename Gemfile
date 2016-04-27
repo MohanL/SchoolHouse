@@ -24,6 +24,7 @@ gem 'omniauth'
 gem 'omniauth-facebook'
 gem 'pundit'
 gem 'combined_time_select'
+gem 'active_model_serializers', '~> 0.9.5'
 
 group :development do
   gem 'web-console', '~> 2.0'
