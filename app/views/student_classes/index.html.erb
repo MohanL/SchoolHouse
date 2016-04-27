@@ -1,14 +1,11 @@
 <h1>Class List</h1>
 <% if current_user.admin? %>
-<div id="build_form">
+<div id="class_form">
   <%= render 'link' %>
-</div>
-
-<div id="new_form">
 </div>
 <% end %>
 
 <br>
-<ul>
+<ul id="classes">
   <%= render @student_classes %>
 </ul>

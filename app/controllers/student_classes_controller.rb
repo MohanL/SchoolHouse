@@ -22,8 +22,8 @@ class StudentClassesController < ApplicationController
     if @student_class.valid?
       @student_class.save
       respond_to do |format|
+        format.json { render json: @student_class.as_json(include: :supplies)}
         format.html { redirect_to @student_class, notice: "Class Successfully Created" }
-        format.js {}
       end
     else
       render :new
@@ -47,8 +47,8 @@ class StudentClassesController < ApplicationController
     if @student_class.valid?
       respond_to do |format|
         if @student_class.update_attributes(student_class_params)
+          format.json { render json: @student_class.as_json(include: [:supplies, :students])}
           format.html { redirect_to @student_class, notice: "Class Successfully Updated" }
-          format.js {}
         end
       end
     else

@@ -1,3 +1,22 @@
 <div id="student_class">
   <%= render 'show' %>
 </div>
+
+<div id="show_student_class">
+  <% if current_user.admin? %>
+    <%= link_to "Edit", edit_student_class_path(@student_class), :remote => true %> | 
+    <%= link_to "Delete", @student_class, :method => :delete, :data => {:confirm => "Are you sure?"} %><br>
+  <% end %>
+  <br>
+  <% if @student_class.students.any? %>
+    <p>Enrolled Students</p>
+    <ul>
+      <% @student_class.students.each do |student| %>
+        <%= render 'student', student: student %>
+      <% end %>
+    </ul>
+  <br>
+  <% end %>
+
+  <%= link_to "Go Back", request.referrer %>
+</div>

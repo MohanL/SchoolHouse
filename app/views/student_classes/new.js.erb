@@ -1,3 +1,2 @@
-console.log("student_classes - new.js.erb file");
-$('div#new_form').html("<%= j render('student_classes/form', student_class: @student_class) %>");
-$('div#build_form').html('');
+$('div#class_form').html("<%= j render('student_classes/form', student_class: @student_class) %>");
+addStudentClassSubmitEvent($('form'));
