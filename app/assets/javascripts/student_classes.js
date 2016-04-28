@@ -15,6 +15,7 @@ function addStudentClassSubmitEvent(elem){
 };
 
 function createStudentClass(response){
+  response = response.student_class;
   var student_class = {
     id: response.id,
     name: response.name,

@@ -1,4 +1,6 @@
 class StudentsController < ApplicationController
+  respond_to :json
+
   def index
     if params[:student_class_id]
       @students = StudentClass.find(params[:student_class_id]).students
@@ -18,7 +20,7 @@ class StudentsController < ApplicationController
     authorize @student
     respond_to do |format|
       if @student.save
-        format.json { render json: @student.as_json(include: :student_class)}
+        format.json { render json: @student}
         format.html { redirect_to @student }
       else 
         render :new
@@ -36,7 +38,7 @@ class StudentsController < ApplicationController
     authorize @student
     respond_to do |format|
       if @student.update_attributes(student_params)
-        format.json { render json: @student.as_json(include: [:student_class, :user])}
+        format.json { render json: @student }
         format.html { redirect_to @student }
       else
         render :edit

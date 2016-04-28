@@ -15,6 +15,7 @@ function addSupplySubmitEvent(elem){
 };
 
 function createSupply(response){
+  response = response.supply
   var supply = {
     id: response.id,
     name: response.name,

@@ -15,7 +15,7 @@ function addStudentSubmitEvent(elem){
 };
 
 function createStudent(response){
-  debugger;
+  response = response.student;
   var student = {
     name: response.name,
     id: response.id,

@@ -22,7 +22,7 @@ class SuppliesController < ApplicationController
     @supply.set_due_date(supply_params[:student_class_id])
     respond_to do |format|
       if @supply.update_attributes(supply_params)
-        format.json { render json: @supply.as_json(include: :student_class) }
+        format.json { render json: @supply }
         format.html { redirect_to @supply, notice: "New Supply Successfully Created"}
       else
         render :new
@@ -34,7 +34,7 @@ class SuppliesController < ApplicationController
     authorize @supply
     respond_to do |format| 
       if @supply.update_attributes(supply_params)
-        format.json { render json: @supply.as_json(include: :student_class) }
+        format.json { render json: @supply }
         format.html { redirect_to @supply, :notice => "Supply Successfully Updated" }
       else
         render :edit
