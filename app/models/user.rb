@@ -7,7 +7,9 @@ class User < ActiveRecord::Base
   enum role: [:normal, :admin]
   has_many :students
   has_many :student_classes, :through => :students
+  has_many :tuitions, :through => :student_classes
   has_many :supplies, :through => :student_classes
+  has_many :payments
 
   def self.from_omniauth(auth)
     where(provider: auth.provider, uid: auth.uid).first_or_create do |user|

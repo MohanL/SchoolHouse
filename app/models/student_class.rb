@@ -1,7 +1,7 @@
 class StudentClass < ActiveRecord::Base
   has_many :students
   has_many :supplies, dependent: :destroy
-  has_one :tuition, dependent: :destroy
+  has_many :tuitions, dependent: :destroy
   accepts_nested_attributes_for :supplies
   serialize :meets_on
   validates :name, presence: true
