@@ -2,6 +2,7 @@ class UsersController < ApplicationController
 
   def index
     @users = User.guardians
+    @student_classes = StudentClass.all
     authorize @users
   end
 

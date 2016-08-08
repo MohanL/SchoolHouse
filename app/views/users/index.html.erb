@@ -1,5 +1,10 @@
-<%= month_calendar do |date| %>
+<%= month_calendar events: @student_classes do |date| %>
   <%= date.day %>
+  <% @student_classes.each do |student_class| %>
+    <div>
+      <%= student_class.name if student_class.meets_on.any?{|day| /#{date.strftime('%A')}/.match(day) } %>
+    </div>
+  <% end %>
 <% end %>
 
 <h1>Showing all Parents</h1>
