@@ -24,6 +24,7 @@ gem 'omniauth'
 gem 'omniauth-facebook'
 gem 'pundit'
 gem 'combined_time_select'
+gem 'simple_calendar', '~> 2.0'
 
 group :development do
   gem 'web-console', '~> 2.0'
