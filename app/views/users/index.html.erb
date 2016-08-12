@@ -2,7 +2,10 @@
   <%= date.day %>
   <% @student_classes.each do |student_class| %>
     <div>
-      <%= student_class.name if student_class.meets_on.any?{|day| /#{date.strftime('%A')}/.match(day) } %>
+      <% if student_class.meets_on.any?{|day| /#{date.strftime('%A')}/.match(day) } %>
+        <%= link_to student_class.name, student_class_path(student_class) %>
+      <%# <%= student_class.name if student_class.meets_on.any?{|day| /#{date.strftime('%A')}/.match(day) } %1> %>
+      <% end %>
     </div>
   <% end %>
 <% end %>
