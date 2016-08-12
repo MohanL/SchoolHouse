@@ -1,5 +1,7 @@
 Rails.application.routes.draw do
 
+  resources :attendances
+
   root 'static_pages#welcome'
   get 'static_pages/about'
   get 'static_pages/contact'

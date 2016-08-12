@@ -9,6 +9,7 @@ class User < ActiveRecord::Base
   has_many :student_classes, :through => :students
   has_many :tuitions, :through => :student_classes
   has_many :supplies, :through => :student_classes
+  has_many :attendances, :through => :students
   has_many :payments
 
   def self.from_omniauth(auth)

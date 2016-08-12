@@ -2,6 +2,7 @@ class StudentClass < ActiveRecord::Base
   has_many :students
   has_many :supplies, dependent: :destroy
   has_many :tuitions, dependent: :destroy
+  has_many :attendences
   accepts_nested_attributes_for :supplies
   serialize :meets_on
   validates :name, presence: true
@@ -50,6 +51,10 @@ class StudentClass < ActiveRecord::Base
         errors[:meets] << "Must choose at least one day of the week"
       end
     end
+  end
+
+  def self.current_month(date)
+    StudentClass.where("start_date < ? AND end_date > ?", date, date)
   end
 
 end
