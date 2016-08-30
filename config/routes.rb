@@ -7,10 +7,12 @@ Rails.application.routes.draw do
   get 'static_pages/contact'
 
   devise_for :users, :controllers => { :omniauth_callbacks => "users/omniauth_callbacks" }
+  get 'classes/day', to: 'student_classes#day', as: 'day'
 
   resources :student_classes, path: :classes do
     resources :students, only: [:show, :index]
   end
+
 
   resources :users do
     resources :students, only: [:show, :index]

@@ -62,6 +62,9 @@ class StudentClassesController < ApplicationController
     redirect_to student_classes_path
   end
 
+  def day
+  end
+
   private
 
     def find_student_class

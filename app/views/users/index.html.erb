@@ -1,5 +1,6 @@
 <%= month_calendar do |date| %>
-  <%= date.day %>
+  <% today = today_classes(date) %>
+  <%= link_to date.day, day_path(:date => date) %>
   <% StudentClass.current_month(date).each do |student_class| %>
     <div>
       <% if student_class.meets_on.any?{|day| /#{date.strftime('%A')}/.match(day) } %>
