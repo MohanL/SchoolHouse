@@ -1,11 +1,9 @@
 <%= month_calendar do |date| %>
   <% today = today_classes(date) %>
-  <%= link_to date.day, day_path(:date => date) %>
-  <% StudentClass.current_month(date).each do |student_class| %>
+  <%= link_to date.day, day_path(:date => date, :classes => today[:classes].to_json) %>
+  <% today[:classes].each do |student_class| %>
     <div>
-      <% if student_class.meets_on.any?{|day| /#{date.strftime('%A')}/.match(day) } %>
-        <%= link_to student_class.name, student_class_path(student_class) %>
-      <% end %>
+      <%= link_to student_class.name, student_class_path(student_class) %>
     </div>
   <% end %>
 <% end %>

@@ -9,6 +9,6 @@ module UsersHelper
         today[:classes] << student_class
       end
     end
-    binding.pry
+    return today
   end
 end

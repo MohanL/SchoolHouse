@@ -63,6 +63,9 @@ class StudentClassesController < ApplicationController
   end
 
   def day
+    @date = params["date"]
+    @classes_hash = JSON.parse(params["classes"])
+    binding.pry
   end
 
   private
