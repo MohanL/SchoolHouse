@@ -1,6 +1,6 @@
 <%= month_calendar do |date| %>
   <% today = today_classes(date) %>
-  <%= link_to date.day, day_path(:date => date, :classes => today[:classes].to_json) %>
+  <%= link_to date.day, day_path(:date => date, :classes => today[:classes].to_json(:only => "id")) %>
   <% today[:classes].each do |student_class| %>
     <div>
       <%= link_to student_class.name, student_class_path(student_class) %>

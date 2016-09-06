@@ -63,9 +63,8 @@ class StudentClassesController < ApplicationController
   end
 
   def day
-    @date = params["date"]
-    @classes_hash = JSON.parse(params["classes"])
-    binding.pry
+    @date = Date.parse(params["date"])
+    @classes = JSON.parse(params["classes"]).map{|student_class| StudentClass.find(student_class["id"])}
   end
 
   private

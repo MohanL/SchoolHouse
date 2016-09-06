@@ -1,0 +1,16 @@
+<h1><%= @date.strftime("%A, %B %e - %Y")%></h1>
+<% if @classes.length == 0 %>
+  <h4>No classes for today</h4>
+  <%= link_to "Back", users_path %>
+<% else %>
+  <% @classes.each do |student_class| %>
+    <h2><%= student_class.name %></h2>
+      <ul>
+      <% student_class.students.each do |student| %>
+        <li><%= student.name %></li>
+      <% end %>
+      </ul>
+  <% end %>
+<% end %>
+
+
