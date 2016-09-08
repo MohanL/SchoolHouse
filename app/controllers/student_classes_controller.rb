@@ -65,6 +65,7 @@ class StudentClassesController < ApplicationController
   def day
     @date = Date.parse(params["date"])
     @classes = JSON.parse(params["classes"]).map{|student_class| StudentClass.find(student_class["id"])}
+    @attendances = Attendance.where(:date => @date)
   end
 
   private
