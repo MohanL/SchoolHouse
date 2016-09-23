@@ -42,6 +42,7 @@ class StudentClassesController < ApplicationController
   end
 
   def update
+    binding.pry
     convert_times 
     authorize @student_class
     if @student_class.valid?

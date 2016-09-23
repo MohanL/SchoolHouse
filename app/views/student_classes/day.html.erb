@@ -4,12 +4,44 @@
 <% else %>
   <% @classes.each do |student_class| %>
     <h2><%= student_class.name %></h2>
-      <ul>
-      <% student_class.students.each do |student| %>
-        <li><%= student.name %></li>
+      <%= form_for student_class do |f| %>
+        <table>
+          <tr>
+            <th>Name</th>
+            <th>On-Time</th>
+            <th>Absent</th>
+            <th>Tardy</th>
+            <th>Late Pickup</th>
+            <th>Notes</th>
+          </tr>
+        <% student_class.students.each do |student| %>
+          <%= f.fields_for student do |s| %>
+            <%= s.hidden_field(:student_id, student.id) %>
+          <tr>
+            <td><%= student.name %></td>
+            <td>
+              <%= s.radio_button(:status, "present")%>
+            </td>
+            <td>
+              <%= s.radio_button(:status, "absent")%>
+            </td>
+            <td>
+              <%= s.radio_button(:status, "tardy")%>
+            </td>
+            <td>
+              <%= s.radio_button(:status, "late_pickup")%>
+            </td>
+            <td>
+              Notes...
+              </td>
+          </tr>
+          <br>
+        <% end %>
+      <% end  %>
+      </table>
+      <br><%= f.submit %><br>
       <% end %>
-      </ul>
   <% end %>
-<% end %>
+<% end #if statement %>
 <%= link_to "Back", users_path %>
 

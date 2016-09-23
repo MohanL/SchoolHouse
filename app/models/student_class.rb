@@ -2,8 +2,9 @@ class StudentClass < ActiveRecord::Base
   has_many :students
   has_many :supplies, dependent: :destroy
   has_many :tuitions, dependent: :destroy
-  has_many :attendences
+  has_many :attendances
   accepts_nested_attributes_for :supplies
+  accepts_nested_attributes_for :attendances
   serialize :meets_on
   validates :name, presence: true
   validates :start_date, presence: true
@@ -31,6 +32,10 @@ class StudentClass < ActiveRecord::Base
       end
     end
   end
+
+  # def attendances_attributes=(attr)
+  #   binding.pry
+  # end
 
   def self.pretty_time(time)
     time.strftime "%l:%M %P"
