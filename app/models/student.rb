@@ -5,4 +5,12 @@ class Student < ActiveRecord::Base
   validates :name, presence: true
   validates :birthday, presence: true
   validates :user_id, presence: true
+
+  def status=(attr)
+
+  end
+
+  def status
+
+  end
 end

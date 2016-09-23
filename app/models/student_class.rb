@@ -33,9 +33,13 @@ class StudentClass < ActiveRecord::Base
     end
   end
 
-  # def attendances_attributes=(attr)
-  #   binding.pry
-  # end
+  def students_attributes=(attrs)
+    binding.pry
+    # attrs.values.each do |att|
+    #   student = Student.find(att[:id])
+    #   student.status = att[:status] if att[:status]
+    # end
+  end
 
   def self.pretty_time(time)
     time.strftime "%l:%M %P"

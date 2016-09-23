@@ -43,7 +43,7 @@ class StudentClassesController < ApplicationController
 
   def update
     binding.pry
-    convert_times 
+    convert_times if params[:start_time] && params[:end_time] && params[:start_date] && params[:end_date]
     authorize @student_class
     if @student_class.valid?
       respond_to do |format|
@@ -89,6 +89,6 @@ class StudentClassesController < ApplicationController
     end
 
     def student_class_params
-      params.require(:student_class).permit(:name, :min_age, :max_age, :start_date, :end_date, :start_time, :end_time, :meets_on => [], supplies_attributes: [:name, :amount])
+      params.require(:student_class).permit(:name, :min_age, :max_age, :start_date, :end_date, :start_time, :end_time, :meets_on => [], supplies_attributes: [:name, :amount], students_attributes: [:id, :status])
     end
 end

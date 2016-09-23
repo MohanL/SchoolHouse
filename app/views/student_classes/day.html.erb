@@ -5,6 +5,7 @@
   <% @classes.each do |student_class| %>
     <h2><%= student_class.name %></h2>
       <%= form_for student_class do |f| %>
+        <%= hidden_field_tag(:date, @date) %>
         <table>
           <tr>
             <th>Name</th>
@@ -14,11 +15,10 @@
             <th>Late Pickup</th>
             <th>Notes</th>
           </tr>
-        <% student_class.students.each do |student| %>
-          <%= f.fields_for student do |s| %>
-            <%= s.hidden_field(:student_id, student.id) %>
+          <%= f.fields_for :students do |s| %>
+            <%= s.hidden_field(:id) %>
           <tr>
-            <td><%= student.name %></td>
+            <td><%= s.object.name %></td>
             <td>
               <%= s.radio_button(:status, "present")%>
             </td>
@@ -37,7 +37,6 @@
           </tr>
           <br>
         <% end %>
-      <% end  %>
       </table>
       <br><%= f.submit %><br>
       <% end %>
