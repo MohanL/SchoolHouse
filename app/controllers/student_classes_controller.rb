@@ -42,8 +42,7 @@ class StudentClassesController < ApplicationController
   end
 
   def update
-    binding.pry
-    convert_times if params[:start_time] && params[:end_time] && params[:start_date] && params[:end_date]
+    convert_times if updating_class?
     authorize @student_class
     if @student_class.valid?
       respond_to do |format|
@@ -71,6 +70,10 @@ class StudentClassesController < ApplicationController
 
   private
 
+    def updating_class?
+      params[:start_time] || params[:end_time] || params[:start_date] || params[:end_date]
+    end
+
     def find_student_class
       @student_class = StudentClass.find(params[:id])
     end
@@ -89,6 +92,6 @@ class StudentClassesController < ApplicationController
     end
 
     def student_class_params
-      params.require(:student_class).permit(:name, :min_age, :max_age, :start_date, :end_date, :start_time, :end_time, :meets_on => [], supplies_attributes: [:name, :amount], students_attributes: [:id, :status])
+      params.require(:student_class).permit(:name, :min_age, :max_age, :start_date, :end_date, :start_time, :end_time, :meets_on => [], supplies_attributes: [:name, :amount], students_attributes: [:id, :status, :date])
     end
 end

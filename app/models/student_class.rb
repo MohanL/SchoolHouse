@@ -34,11 +34,12 @@ class StudentClass < ActiveRecord::Base
   end
 
   def students_attributes=(attrs)
-    binding.pry
-    # attrs.values.each do |att|
-    #   student = Student.find(att[:id])
-    #   student.status = att[:status] if att[:status]
-    # end
+    attrs.values.each do |att|
+      student = Student.find(att[:id])
+      if att[:status]
+        student.status = {:status => att[:status], :date => att[:date]}
+      end
+    end
   end
 
   def self.pretty_time(time)

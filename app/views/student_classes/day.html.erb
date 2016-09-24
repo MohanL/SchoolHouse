@@ -17,6 +17,7 @@
           </tr>
           <%= f.fields_for :students do |s| %>
             <%= s.hidden_field(:id) %>
+            <%= s.hidden_field(:date, value: @date) %>
           <tr>
             <td><%= s.object.name %></td>
             <td>

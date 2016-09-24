@@ -7,10 +7,16 @@ class Student < ActiveRecord::Base
   validates :user_id, presence: true
 
   def status=(attr)
-
+    attendance = self.attendances.find_or_create_by(:date => attr[:date])
+    attendance.status = attr[:status]
+    attendance.save
   end
 
   def status
+    #this is currently here just to provide nested form data
+  end
 
+  def date
+    #this is currently here just to provide nested form data
   end
 end
