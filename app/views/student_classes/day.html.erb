@@ -16,21 +16,22 @@
             <th>Notes</th>
           </tr>
           <%= f.fields_for :students do |s| %>
+            <% binding.pry %>
             <%= s.hidden_field(:id) %>
             <%= s.hidden_field(:date, value: @date) %>
           <tr>
             <td><%= s.object.name %></td>
             <td>
-              <%= s.radio_button(:status, "present", :checked => attendance_event?(s.object.id, "present"))%>
+              <%= s.radio_button(:status, "present", :checked => attendance_event?(s.object.id, 0))%>
             </td>
             <td>
-              <%= s.radio_button(:status, "absent", :checked => attendance_event?(s.object.id, "absent"))%>
+              <%= s.radio_button(:status, "absent", :checked => attendance_event?(s.object.id, 1))%>
             </td>
             <td>
-              <%= s.radio_button(:status, "tardy", :checked => attendance_event?(s.object.id, "tardy"))%>
+              <%= s.radio_button(:status, "tardy", :checked => attendance_event?(s.object.id, 2))%>
             </td>
             <td>
-              <%= s.radio_button(:status, "late_pickup", :checked => attendance_event?(s.object.id, "late_pickup"))%>
+              <%= s.radio_button(:status, "late_pickup", :checked => attendance_event?(s.object.id, 3))%>
             </td>
             <td>
               Notes...

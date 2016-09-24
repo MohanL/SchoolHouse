@@ -1,8 +1,7 @@
 module StudentClassesHelper
 
   def attendance_event?(id, status)
-    return true if Attendance.where(student_id: id, date: @date, status: status)
-    nil
+    Attendance.where(student_id: id, date: @date, status: status).length > 0 ? true : false
   end
 
 end
