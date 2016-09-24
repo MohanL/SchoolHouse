@@ -21,16 +21,16 @@
           <tr>
             <td><%= s.object.name %></td>
             <td>
-              <%= s.radio_button(:status, "present")%>
+              <%= s.radio_button(:status, "present", :checked => attendance_event?(s.object.id, "present"))%>
             </td>
             <td>
-              <%= s.radio_button(:status, "absent")%>
+              <%= s.radio_button(:status, "absent", :checked => attendance_event?(s.object.id, "absent"))%>
             </td>
             <td>
-              <%= s.radio_button(:status, "tardy")%>
+              <%= s.radio_button(:status, "tardy", :checked => attendance_event?(s.object.id, "tardy"))%>
             </td>
             <td>
-              <%= s.radio_button(:status, "late_pickup")%>
+              <%= s.radio_button(:status, "late_pickup", :checked => attendance_event?(s.object.id, "late_pickup"))%>
             </td>
             <td>
               Notes...

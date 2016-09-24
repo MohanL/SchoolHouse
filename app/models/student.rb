@@ -12,7 +12,7 @@ class Student < ActiveRecord::Base
     attendance.save
   end
 
-  def status
+  def status(date = nil)
     #this is currently here just to provide nested form data
   end
 
