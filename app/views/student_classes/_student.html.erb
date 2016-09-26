@@ -1,5 +1,9 @@
 <% if current_user.admin? %>
-  <li><%= link_to student.name, student_class_student_path(@student_class, student) %></li>
+  <li><%= link_to student.name, student_class_student_path(@student_class, student) %>
+    <% if student.attendances.where(status: 3).length > 0 %>
+      <%= student.attendances.where(status: 3).length %> Late Pickup Occurrence(s)!
+    <% end %>
+</li>
 <% else %>
   <li><%= student.name %></li>
 <% end %>

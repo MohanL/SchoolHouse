@@ -1,0 +1,47 @@
+<h1><%= @date.strftime("%A, %B %e - %Y")%></h1>
+<% if @classes.length == 0 %>
+  <h4>No classes for today</h4>
+<% else %>
+  <% @classes.each do |student_class| %>
+      <%= form_for student_class do |f| %>
+        <h2><%= link_to student_class.name, student_class_path(student_class) %></h2>
+        <table>
+          <tr>
+            <th>Name</th>
+            <th>Present</th>
+            <th>Absent</th>
+            <th>Tardy</th>
+            <th>Late Pickup</th>
+            <th>Notes</th>
+          </tr>
+          <%= f.fields_for :students do |s| %>
+            <%= s.hidden_field(:id) %>
+            <%= s.hidden_field(:date, value: @date) %>
+          <tr>
+            <td><%= s.object.name %></td>
+            <td>
+              <%= s.radio_button(:status, "present", :checked => (attendance_event?(s.object.id, 0)) || default_option?(s.object.id)) %>
+            </td>
+            <td>
+              <%= s.radio_button(:status, "absent", :checked => attendance_event?(s.object.id, 1))%>
+            </td>
+            <td>
+              <%= s.radio_button(:status, "tardy", :checked => attendance_event?(s.object.id, 2))%>
+            </td>
+            <td>
+              <%= s.radio_button(:status, "late_pickup", :checked => attendance_event?(s.object.id, 3))%>
+            </td>
+            <td>
+              Notes...
+              </td>
+          </tr>
+          <br>
+        <% end %>
+      </table>
+      <%= hidden_field_tag(:date, @date) %>
+      <br><%= f.submit %><br>
+      <% end %>
+  <% end %>
+<% end #if statement %>
+<%= link_to "Back", users_path %>
+

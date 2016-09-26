@@ -1,20 +1,20 @@
 <%= month_calendar do |date| %>
   <% today = today_classes(date) %>
-  <%= link_to date.day, day_path(:date => date, :classes => today[:classes].to_json(:only => "id")) %>
+  <%= link_to date.day, day_path(:date => date, :classes => today[:classes].to_json(:only => "id")), :remote => true %>
   <% today[:classes].each do |student_class| %>
-    <div>
-      <%= link_to student_class.name, student_class_path(student_class) %>
-    </div>
+    <div><%= student_class.name %></div>
   <% end %>
 <% end %>
 
-<h1>Showing all Parents</h1>
-<ul>
-<% @users.each do |user| %>
-  <li><%= link_to user.name, user %> (
-    <% user.students.each do |student| %>
-      <%= link_to student.name, student  %> 
-    <% end %>
-    )</li>
-<% end %>
-</ul>
+<div id="data_container">
+  <h1>Showing all Parents</h1>
+  <ul>
+  <% @users.each do |user| %>
+    <li><%= link_to user.name, user %> (
+      <% user.students.each do |student| %>
+        <%= link_to student.name, student  %> 
+      <% end %>
+      )</li>
+  <% end %>
+  </ul>
+</div>
